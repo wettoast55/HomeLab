@@ -17,10 +17,10 @@ source /etc/network/interfaces.d/*
 ----------------------------------
 
 Physical NIC (nic0)
-│
-▼
-vmbr0
-│
-┌──────┼──────┐
-│ │ │
-CT102 CT103 VM100
+        │
+        ▼
+      vmbr0
+        │
+ ┌──────┼──────┐
+ │      │      │
+ CT102 CT103 VM100
