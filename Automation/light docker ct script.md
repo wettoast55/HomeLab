@@ -20,7 +20,21 @@ pct start 104 pct enter 104
 
 DOCKER INSTALLATION
 #install docker using ubuntushell from pve/pct 104: 
-apt update && apt upgrade -y apt install -y curl wget nano   apt install -y curl wget nano ca-certificates curl -fsSL https://get.docker.com | sh   apt install -y docker-compose-plugin
+apt update && apt upgrade -y 
+
+apt update
+apt upgrade -y
+ 
+apt install -y \
+curl \
+wget \
+nano \
+git \
+ca-certificates \
+gnupg \
+lsb-release
+
+curl -fsSL https://get.docker.com | sh
 
 #verify docker 
 install docker --version docker compose version
@@ -33,5 +47,7 @@ ip addr ip route cat /etc/resolv.conf ping -c 4 8.8.8.8 ping -c 4 google.com
 
 #On the Proxmox host: 
 pct stop ctnumber pct set ctnumber --nameserver 1.1.1.1
+
+#turned container into template and stored into NAS
 
 
