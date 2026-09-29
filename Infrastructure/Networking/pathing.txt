@@ -16,11 +16,31 @@ iface vmbr0 inet static
 source /etc/network/interfaces.d/*
 ----------------------------------
 
-Physical NIC (nic0)
-        │
-        ▼
-      vmbr0
-        │
- ┌──────┼──────┐
- │      │      │
- CT102 CT103 VM100
+                               
+                                Internet
+                                │
+                                ▼
+                        ASUS Router
+                         192.168.50.1/24
+                                │
+                                ▼
+                        Physical LAN
+                                │
+                                ▼
+                        Proxmox Host (pve)
+                        192.168.50.2/24
+                                │
+                        nic0
+                                │
+                        ┌──────┴──────┐
+                        │ vmbr0 │
+                         │ Virtual │
+                        │ Switch │
+                         └──────┬──────┘
+                                │
+                ┌───────────────┼───────────────┐
+                │                 │              │
+                ▼                 ▼              ▼
+                LXC 102         LXC 103         VM 100
+        (Immich?)                (Jellyfin?)         (Other)
+        eth0                         eth0                 net0
