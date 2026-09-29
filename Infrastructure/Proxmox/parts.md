@@ -1,0 +1,93 @@
+8 x Intel(R) Core(TM) i3-14100 (1 Socket)
+Kernel Version Linux 7.0.14-12-pve (2026-08-11T11:05Z)
+Boot Mode EFI
+9.1.1
+
+
+
+--------------
+# show ram info
+root@pve:~# dmidecode --type 17
+
+# dmidecode 3.6
+Getting SMBIOS data from sysfs.
+SMBIOS 3.4.0 present.
+
+Handle 0x003A, DMI type 17, 92 bytes
+Memory Device
+        Array Handle: 0x0039
+        Error Information Handle: Not Provided
+        Total Width: 64 bits
+        Data Width: 64 bits
+        Size: 8 GB
+        Form Factor: DIMM
+        Set: None
+        Locator: Controller0-ChannelA-DIMM0
+        Bank Locator: BANK 0
+        Type: DDR4
+        Type Detail: Synchronous
+        Speed: 2133 MT/s
+        Manufacturer: G Skill Intl
+        Serial Number: 00000000
+        Asset Tag: 9876543210
+        Part Number: F4-3200C16-8GVKB    
+        Rank: 1
+        Configured Memory Speed: 2133 MT/s
+        Minimum Voltage: 1.2 V
+        Maximum Voltage: 1.35 V
+        Configured Voltage: 1.2 V
+        Memory Technology: DRAM
+        Memory Operating Mode Capability: Volatile memory
+        Firmware Version: Not Specified
+        Module Manufacturer ID: Bank 5, Hex 0xCD
+        Module Product ID: Unknown
+        Memory Subsystem Controller Manufacturer ID: Unknown
+        Memory Subsystem Controller Product ID: Unknown
+        Non-Volatile Size: None
+        Volatile Size: 8 GB
+        Cache Size: None
+        Logical Size: None
+
+Handle 0x003B, DMI type 17, 92 bytes
+Memory Device
+        Array Handle: 0x0039
+        Error Information Handle: Not Provided
+        Total Width: 64 bits
+        Data Width: 64 bits
+        Size: 32 GB
+        Form Factor: DIMM
+        Set: None
+        Locator: Controller1-ChannelA-DIMM0
+        Bank Locator: BANK 0
+        Type: DDR4
+        Type Detail: Synchronous
+        Speed: 2133 MT/s
+        Manufacturer: Corsair
+        Serial Number: 00000000
+        Asset Tag: 9876543210
+        Part Number: CMK64GX4M2E3200C16  
+        Rank: 2
+        Configured Memory Speed: 2133 MT/s
+        Minimum Voltage: 1.2 V
+        Maximum Voltage: 1.35 V
+        Configured Voltage: 1.2 V
+        Memory Technology: DRAM
+        Memory Operating Mode Capability: Volatile memory
+        Firmware Version: Not Specified
+        Module Manufacturer ID: Bank 3, Hex 0x9E
+        Module Product ID: Unknown
+        Memory Subsystem Controller Manufacturer ID: Unknown
+        Memory Subsystem Controller Product ID: Unknown
+        Non-Volatile Size: None
+        Volatile Size: 32 GB
+        Cache Size: None
+        Logical Size: None
+------------------------
+#show ram availability
+
+root@pve:~# free -h
+cat /proc/meminfo | grep MemTotal
+               total        used        free      shared  buff/cache   available
+Mem:            38Gi        31Gi       7.9Gi        87Mi       448Mi       7.8Gi
+Swap:          8.0Gi       6.4Mi       8.0Gi
+MemTotal:       40810748 kB
