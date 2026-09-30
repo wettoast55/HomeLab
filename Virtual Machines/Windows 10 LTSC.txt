@@ -4,3 +4,5 @@ https://archive.org/download/Windows10EnterpriseLTSC202164Bit/en-us_windows_10_e
 #downloaded ubuntu server to proxmox storage
 https://releases.ubuntu.com/26.04.1/ubuntu-26.04.1-live-server-amd64.iso
 
+#download windows 2022 server iso to proxmox storage
+https://go.microsoft.com/fwlink/p/?LinkID=2195280&clcid=0x409&culture=en-us&country=US
