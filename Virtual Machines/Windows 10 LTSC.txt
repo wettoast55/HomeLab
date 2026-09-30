@@ -6,6 +6,12 @@ https://archive.org/download/Windows10EnterpriseLTSC202164Bit/en-us_windows_10_e
 #download Windows 11 Client - Build 26300.9457 to proxmox storage
 https://software.download.prss.microsoft.com/dbazure/Windows11_Client_x64_en-us_26300_9457.iso?t=4aac1bae-f0b2-47b5-bf83-5adcf64928e6&P1=1790884697&P2=602&P3=2&P4=QRdGmcKKX2URC5lldsijLtsBTcWUbRYRQuVSQTuoo6Lx2hjbDdtPUOhh7Ur5mesfEj0dFdt7siLnX%2bYEypyHpdskEV%2b1OvLzNRddyzAdKZGajAD2hMZzjA2sHEf0j5qLoL3dUetCiQ0WsgVIRo8sX4lUfL7we0qYJcHo%2bi3cBWDUufi2FzmKHQJ6lX1qhDLJanGmlT0jy5xLA5bgckkv8ggki4IS5h6XwGy4Wt3q1zAGBH51eca9rPnZiwSy90AQT7TFPOa0GDDKvbbZGgX0ytRfgAr6ZnbpukvGqERJLTiz9qAIEkFTuXFPhshB2uAxaeokYw8D1rDAGGNFOqlmRg%3d%3d
 
+      #had to enable qemu guest agent and download virtio drivers and mount to same proxmox vm
+
+
+
+
+
 #download fedora kde desktop live 44.1.7 to proxmox storage
 https://lolhost.mm.fcix.net/fedora/linux/releases/44/KDE/x86_64/iso/Fedora-KDE-Desktop-Live-44-1.7.x86_64.iso
 
