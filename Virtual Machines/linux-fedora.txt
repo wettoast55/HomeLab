@@ -1,0 +1,4 @@
+#password resetting linux
+  1. reboot vm, press e at GRUB
+  2. in line starting with linux... replace "ro quiet" with "rw init=/bin/bash"
+  3. press ctrl+x to boot and enter "passwd "username"" to change password 
