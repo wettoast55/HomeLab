@@ -1,9 +1,11 @@
-8 x Intel(R) Core(TM) i3-14100 (1 Socket)
+CPU(s) 8 x Intel(R) Core(TM) i3-14100 (1 Socket)
+RAM usage 55.24% (21.50 GiB of 38.92 GiB)
+        KSM sharing 295.39 MiB
+        HD space 15.62% (14.98 GiB of 95.94 GiB)
+        SWAP usage 19.51% (1.56 GiB of 8.00 GiB)
+
 Kernel Version Linux 7.0.14-12-pve (2026-08-11T11:05Z)
 Boot Mode EFI
-9.1.1
-
-
 
 --------------
 # show ram info
