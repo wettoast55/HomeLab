@@ -1,7 +1,7 @@
 ubuntu-24.04-standard_24.04-2_amd64.tar.zst
 1gb ram
 512 mb swap, 1 core cpu
-8gb ssd
+8gb ssd IF CREATED ON HDD WILL BE TOOOO SLOW AND TAKE UP TRUENAS IO
 
 ##initial setup###
 apt update && apt upgrade -y
