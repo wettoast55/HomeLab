@@ -2,12 +2,49 @@ ubuntu-24.04-standard_24.04-2_amd64.tar.zst
 1gb ram
 512 mb swap, 1 core cpu
 8gb ssd IF CREATED ON HDD WILL BE TOOOO SLOW AND TAKE UP TRUENAS IO
+SET IP TO DHCP
+###init docker setup
+    #Docker Compose version v5.6.0
+    #Docker version 29.8.2, build 7fc2dff
+    
+    ##initial setup after pct enter ct###
+    apt update && apt upgrade -y
+    apt install -y curl ca-certificates gnupg lsb-release
+    
+    curl -fsSL https://get.docker.com | sh
+    apt install -y docker-compose-plugin
+    
+    # verify docker install and compose plugin
+    docker --version
+    docker compose version
+    
+###dashy setup after docker install
+    #create dashy dir and docker-compose.yml
+      mkdir -p /opt/dashy
+      cd /opt/dashy
+      nano docker-compose.yml
 
-##initial setup###
-apt update && apt upgrade -y
-apt install -y curl ca-certificates
-curl -fsSL https://get.docker.com | sh
-apt install -y docker-compose-plugin
+    #paste to create image off lissy93/dashy template, save exit
+      services:
+        dashy:
+        image: lissy93/dashy:latest
+        container_name: dashy
+        restart: unless-stopped
+         
+        ports:
+        - "8088:8080"
+         
+        volumes:
+        - ./user-data:/app/user-data
+         
+        environment:
+        - NODE_ENV=production
+        
+    #start and check docker
+      docker compose up -d
+      docker ps
+
+
 
 #issue 1 - networking - ip/dhcp unreachable
   #stop ct from proxmox and edit config
