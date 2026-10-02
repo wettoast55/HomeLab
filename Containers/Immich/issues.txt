@@ -18,4 +18,4 @@ issue 1: slow upload/download of images/vids
 issue 2: resource busy/freezing truenas causing connectivity issues for entire vm
   #increased resource allocation in BOTH vm configs to immich and on proxmox
   Immich config: 2cpu -> 4cpu,4gb ram ->8gb ram
-  proxmox allocation: 2 cores->4 cores, 8gb ram->12gb ram
+  proxmox allocation: 2 cores->8 cores, 8gb ram->12gb ram
