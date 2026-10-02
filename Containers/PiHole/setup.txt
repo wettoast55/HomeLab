@@ -1,4 +1,19 @@
 raspberry pi 3 model b+
 
-flashed with rasp pi 32bit os lite 9/15/2026 release ssh enabled
+flashed with rasp pi 32bit os lite 9/15/2026 release ssh enabled, wired to switch
 hostname: raspberrypi
+
+#issue - mitm possible warning due to old ssh keys to same ip via ssh terminal
+  #clear key 
+  ssh-keygen -R 192.168.50.79
+
+#init and pihole install
+  sudo apt update && sudo apt upgrade -y
+  curl -sSL https://install.pi-hole.net | sudo bash
+
+#set static ip
+
+#config other devices to use pihole as dns server...
+ipv4: 192.168.50.79 ... port 80 for webadmin
+
+#change router dns to point to pi
