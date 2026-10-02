@@ -48,6 +48,17 @@ SET IP TO DHCP
 
     ####SEE CONF.YML TEMPLATE FOR CURRENT DASH###
 
+    #point docker-compose.yml to modified file on in /opt/dashy, add to bottom of docker-compose.yml, ensure indentation rules are good, volumes underdashy:
+
+    ie:
+            services:
+                dashy:
+                    ---   
+                    ---   
+                ports:
+                    ---   
+                volumes:
+                    - ./user-data:/app/user-data
 
 
 
