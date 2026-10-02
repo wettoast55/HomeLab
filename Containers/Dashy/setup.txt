@@ -24,25 +24,31 @@ SET IP TO DHCP
       cd /opt/dashy
       nano docker-compose.yml
 
-    #paste to create image off lissy93/dashy template, save exit
+    #paste to create image off lissy93/dashy template, ensure no extra lines, save exit
       services:
         dashy:
         image: lissy93/dashy:latest
         container_name: dashy
         restart: unless-stopped
-         
         ports:
-        - "8088:8080"
-         
-        volumes:
-        - ./user-data:/app/user-data
-         
-        environment:
-        - NODE_ENV=production
-        
-    #start and check docker
+            - "8088:8080"
+
+    #start and check docker use ip of ct port 8088 to access web app
       docker compose up -d
       docker ps
+
+
+    #copy dashy config out to mounted volumn for easy edits
+        docker cp dashy:/app/user-data/conf.yml /opt/dashy/user-data/conf.yml
+        ls -la /opt/dashy/user-data
+
+    #customizing dash, install nano to edit configs
+    #editing config inside container
+    nano /opt/dashy/user-data/conf.yml
+
+    ####SEE CONF.YML TEMPLATE FOR CURRENT DASH###
+
+
 
 
 
