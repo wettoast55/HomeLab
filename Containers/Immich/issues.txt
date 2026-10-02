@@ -1,0 +1,21 @@
+issue 1: slow upload/download of images/vids
+  #move mlcache and postgres from hdd to sdd
+    #stopped immich and created directories/dataset under ssd
+        /mnt/CloudApps/ImmichML/mlcache
+        /mnt/CloudApps/ImmichML/db
+
+    #copy existing data over
+      sudo rsync -avh --progress /mnt/NAS/Immich/db/ /mnt/CloudApps/ImmichML/db/
+      sudo rsync -avh --progress /mnt/NAS/Immich/mlcache/ /mnt/CloudApps/ImmichML/mlcache/
+
+    #update immich configs to reflect new location
+      PostgreSQL Data Storage:
+      Host Path = /mnt/CloudApps/ImmichML/db
+       
+      Machine Learning Cache:
+      Host Path = /mnt/CloudApps/ImmichML/mlcache
+
+issue 2: resource busy/freezing truenas causing connectivity issues for entire vm
+  #increased resource allocation in BOTH vm configs to immich and on proxmox
+  Immich config: 2cpu -> 4cpu,4gb ram ->8gb ram
+  proxmox allocation: 2 cores->4 cores, 8gb ram->12gb ram
