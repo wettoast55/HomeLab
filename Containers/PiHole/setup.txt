@@ -20,5 +20,5 @@ ipv4: 192.168.50.79 ... port 80 for webadmin
 
 #setting static ip on pi via ssh
 sudo nmtui
-#edit ipv4 config, set address, gateway, dns 1.1.1.1,8.8.8.8 then restart nm
+#edit ipv4 config, set address, gateway, dns 1.1.1.1,8.8.8.8 then restart nm, ip a for verification
 sudo systemctl restart NetworkManager
