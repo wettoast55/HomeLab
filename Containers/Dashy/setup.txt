@@ -1,0 +1,19 @@
+ubuntu-24.04-standard_24.04-2_amd64.tar.zst
+1gb ram
+512 mb swap, 1 core cpu
+8gb ssd
+
+##initial setup###
+apt update && apt upgrade -y
+apt install -y curl ca-certificates
+curl -fsSL https://get.docker.com | sh
+apt install -y docker-compose-plugin
+
+#issue 1 - networking - ip/dhcp unreachable
+  #stop ct from proxmox and edit config
+  nano /etc/pve/lxc/101.conf
+
+  #ensure ip=dhcp bit is in line net0
+  net0: name=eth0,bridge=vmbr0,firewall=1,hwaddr=BC:24:11:DA:FF:CC,ip=dhcp,type=veth
+
+  #save restart ct
