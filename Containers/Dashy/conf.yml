@@ -1,0 +1,138 @@
+pageInfo:
+ 
+# Name shown at the top of the dashboard
+title: Kevin's Homelab
+ 
+# Short description shown below the title
+description: Media, Infrastructure and Cyber Lab
+ 
+# Optional logo
+# logo: https://example.com/logo.png
+ 
+# ==========================
+# DASHY SETTINGS
+# ==========================
+ 
+appConfig:
+ 
+# Theme color scheme
+# Try:
+# colorful
+# material
+# nord
+# dracula
+# one-dark
+theme: colorful
+ 
+# Layout type
+layout: auto
+ 
+# Open links in a new browser tab
+openingMethod: newtab
+ 
+# ==========================
+# DASHBOARD SECTIONS
+# ==========================
+ 
+sections:
+ 
+# ------------------------
+# INFRASTRUCTURE
+# ------------------------
+- name: Infrastructure
+ 
+# FontAwesome icon
+icon: fas fa-server
+ 
+items:
+ 
+# Proxmox
+- title: Proxmox
+ 
+# URL when clicked
+url: https://192.168.50.2:8006
+ 
+# Description under card
+description: Virtualization Host
+ 
+# Icon from Dashboard Icons
+icon: hl-proxmox
+ 
+# TrueNAS
+- title: TrueNAS
+url: http://192.168.50.46
+description: Storage Server
+icon: hl-truenas
+ 
+# ASUS Router
+- title: Router
+url: http://www.asusrouter.com
+description: ASUS Management
+icon: mdi-router-wireless
+ 
+# ------------------------
+# MEDIA SERVICES
+# ------------------------
+- name: Media
+ 
+icon: fas fa-photo-film
+ 
+items:
+ 
+- title: Immich
+url: http://192.168.50.46:30041
+description: Photo Management
+icon: hl-immich
+ 
+- title: Jellyfin
+url: http://192.168.50.15:8096
+description: Media Server
+icon: hl-jellyfin
+ 
+- title: AMP
+url: http://192.168.50.162:8080
+description: Game Server Panel
+icon: mdi-minecraft
+ 
+# ------------------------
+# CYBERSECURITY LAB
+# ------------------------
+- name: Cyber Lab
+ 
+icon: fas fa-shield-halved
+ 
+items:
+ 
+- title: TryHackMe
+url: https://tryhackme.com
+description: Training Platform
+icon: hl-tryhackme
+ 
+- title: Zeek
+url: https://zeek.org
+description: Network Security Monitor
+icon: mdi-shield-search
+ 
+- title: Suricata
+url: http://100.101.25.51
+description: IDS/IPS Dashboard
+icon: mdi-security
+ 
+# ------------------------
+# CLOUD & PRODUCTIVITY
+# ------------------------
+- name: Productivity
+ 
+icon: fas fa-cloud
+ 
+items:
+ 
+- title: Outlook
+url: https://outlook.live.com
+description: Email
+icon: hl-outlook
+ 
+- title: Teams
+url: https://dod.teams.microsoft.us
+description: Microsoft Teams
+icon: hl-microsoft-teams
