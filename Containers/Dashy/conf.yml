@@ -1,38 +1,33 @@
+#NO EXTRA SPACING OR WILL CAUSE failed to parse YAML: can not read a block mapping entry
+
 pageInfo:
-title: Kevin's Homelab
-description: Media, Infrastructure and Cyber Lab
- 
+  title: Kevin's Homelab
+  description: Media, Infrastructure and Cyber Lab
 appConfig:
-theme: colorful
-openingMethod: newtab
- 
+  theme: colorful
+  openingMethod: newtab
 sections:
-- name: Infrastructure
-items:
-- title: Proxmox
-url: https://192.168.50.2:8006
- 
-- title: TrueNAS
-url: http://192.168.50.46
- 
-- title: ASUS Router
-url: http://www.asusrouter.com
- 
-- name: Media
-items:
-- title: Immich
-url: http://192.168.50.46:30041
- 
-- title: Jellyfin
-url: http://192.168.50.15:8096
- 
-- title: AMP
-url: http://192.168.50.162:8080
- 
-- name: Security
-items:
-- title: TryHackMe
-url: https://tryhackme.com
- 
-- title: Zeek
-url: https://zeek.org
+  - name: Infrastructure
+    items:
+      - title: Proxmox
+        url: https://192.168.50.2:8006
+      - title: TrueNAS
+        url: http://192.168.50.46
+      - title: ASUS Router
+        url: http://www.asusrouter.com
+
+  - name: Media
+    items:
+    - title: Immich
+      url: http://192.168.50.46:30041
+    - title: Jellyfin
+      url: http://192.168.50.15:8096
+    - title: AMP
+      url: http://192.168.50.162:8080
+
+  - name: Security
+    items:
+      - title: TryHackMe
+        url: https://tryhackme.com
+      - title: Zeek
+        url: https://zeek.org
