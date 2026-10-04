@@ -1,7 +1,9 @@
 vm 200
 Parrot Security 7.4 
 DEBIAN_VERSION_FULL=13.6 
-
+Parrot VM
+├─ Zeek 9.1.0
+└─ Suricata 7.0.10
 
 #after parrot install  
 sudo apt update && sudo apt upgrade -y
@@ -140,9 +142,13 @@ ls -lah /usr/local/zeek/spool/zeek
       files.log = file transfers
       notice.log = notable events
 -#
------------------------------- suricata install main dir as desktop
+------------------------------ suricata alerting & signatures - install main dir as desktop 
 
 #installing suricata to same vm and run on same network interface
 sudo apt install suricata suricata-update -y
 sudo suricata-update
 sudo suricata -i ens18
+
+#check suricata traffic in sep term
+sudo tail -f /var/log/suricata/fast.log
+
