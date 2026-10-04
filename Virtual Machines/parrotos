@@ -104,3 +104,30 @@ tc filter show dev vmbr0 parent ffff:
 
 #test capture again should see all traffic within proxmox env
 sudo tcpdump -i ens18 -nn
+
+#test for all non (parrotos connections)
+sudo tcpdump -i ens18 -nn not host 192.168.50.213
+
+
+------------------------------
+#zeekControl
+#creating config and editing node.cfg
+sudo mkdir -p /usr/local/zeek/etc
+nano /usr/local/zeek/etc/node.cfg
+
+#verify file, if interface incorrect ie: set to eth0 zeek will crash, use "diag" to check after runs
+        [zeek]
+        type=standalone
+        host=localhost
+        interface=ens18 
+
+#deploying zeek
+sudo /usr/local/zeek/bin/zeekctl
+
+#within zeekctl
+deploy
+status
+
+#check connections live
+tail -f /usr/local/zeek/logs/current/conn.log
+
