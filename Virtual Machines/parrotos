@@ -71,5 +71,36 @@ sudo /usr/local/zeek/bin/zeek -i ens18
 
 #setup- traffic mirror from promox bridge
 #get ip and link
-ip link
-bridge*link
+ip link #gets interface name (vmbr0 is proxmox bridge)
+bridge link #gets corresponding interface for vm (tap200i0)
+
+#testing if vm can see other vm/ct network traffic
+sudo ip link set ens18 promisc on
+sudo tcpdump -i ens18 -nn
+
+#current traffic path looks like
+vmbr0
+│
+fwpr200p0
+│
+fwbr200i0
+│
+tap200i0
+│
+Parrot VM
+
+---------------------------
+#mirror vmbr0 to parrot, can only see parrot traffic right now... 
+#add ingress mirroring on proxmox host
+tc qdisc add dev vmbr0 ingress
+
+#mirror everything entering vmbr0 toward the Parrot interface:
+tc filter add dev vmbr0 parent ffff: \
+matchall \
+action mirred egress mirror dev fwpr200p0
+
+#verify mirror
+tc filter show dev vmbr0 parent ffff:
+
+#test capture again should see all traffic within proxmox env
+sudo tcpdump -i ens18 -nn
