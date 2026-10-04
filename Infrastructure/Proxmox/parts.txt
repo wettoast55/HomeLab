@@ -93,3 +93,20 @@ cat /proc/meminfo | grep MemTotal
 Mem:            38Gi        31Gi       7.9Gi        87Mi       448Mi       7.8Gi
 Swap:          8.0Gi       6.4Mi       8.0Gi
 MemTotal:       40810748 kB
+
+
+
+-------------------
+#UPS USB UPS → Proxmox direct connection
+
+#verify Proxmox sees it "American Power Conversion UPS"
+lsusb
+       """Bus 001 Device 002: ID 0764:0501 Cyber Power System, Inc. CP1500 AVR UPS"""
+
+#install NUT network ups tools
+apt update
+apt install nut nut-client nut-server
+
+#start nut server and start status
+systemctl restart nut-server
+upsc ups
