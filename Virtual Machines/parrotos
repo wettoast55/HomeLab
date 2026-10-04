@@ -1,0 +1,50 @@
+vm 200
+Parrot Security 7.4 
+DEBIAN_VERSION_FULL=13.6 
+
+
+#after parrot install  
+sudo apt update && sudo apt upgrade -y
+
+#vm config
+enable quemu guest agent - clipboard 
+enable SPICE (qxl) display
+download spice file and run using local spice clinet
+  https://virt-manager.org/download.html
+
+OR----
+#use rdp for simplicity via windows
+sudo apt install xrdp -y
+sudo systemctl enable --now xrdp
+
+#then connect via mstsc.exe
+#black screen but icons should stil be visible usable up top can copypaste as needed
+
+
+
+-------------------
+#building zeek from source, due to dependency conflicts
+#download dependencies
+sudo apt install -y \
+cmake \
+make \
+gcc \
+g++ \
+flex \
+bison \
+libpcap-dev \
+libssl-dev \
+python3-dev \
+swig \
+zlib1g-dev \
+git
+
+#build zeek (in desktop) and verify version
+git clone --recursive https://github.com/zeek/zeek.git
+cd zeek
+cmake -B build
+cmake --build build -j$(nproc)
+sudo cmake --install build
+zeek --version
+
+
