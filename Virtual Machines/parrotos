@@ -57,8 +57,19 @@ sudo cmake --install build
 echo 'export PATH=$PATH:/usr/local/zeek/bin' >> ~/.bashrc
 source ~/.bashrc
 
+echo 'export PATH=$PATH:/usr/local/zeek/bin' | sudo tee /etc/profile.d/zeek.sh
+source /etc/profile.d/zeek.sh
+
 which zeek
 which zeekctl
 zeek --version
 
+#start zeek listen on default vm interface
+sudo /usr/local/zeek/bin/zeek -i ens18
 
+
+
+#setup- traffic mirror from promox bridge
+#get ip and link
+ip link
+bridge*link
