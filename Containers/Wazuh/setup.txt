@@ -1,3 +1,13 @@
+#creating vm for wazuh
+https://saimei.ftp.acc.umu.se/images/archive/12.12.0/amd64/iso-dvd/debian-12.12.0-amd64-DVD-1.iso
+deb 12.12.0 amd64
+Debian 12
+6 vCPU
+12GB RAM
+64GB disk
+
+
+###########################ATTTEMPTED CT CREation failed
 #create lxc for wazuh dash, install and verify docker functionality
 Debian 12
 6 vCPU
@@ -19,3 +29,42 @@ docker --version
 docker-compose --version
 systemctl enable docker
 systemctl start docker
+
+#locale warning clean up may need to be done before docker start
+apt install -y locales
+sed -i 's/^# *en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+locale-gen
+update-locale LANG=en_US.UTF-8
+
+-------------------------
+#clone wazuh git
+apt install git -y
+cd /opt
+git clone https://github.com/wazuh/wazuh-docker.git
+cd wazuh-docker/single-node
+
+#start stack ... 
+docker-compose up -d
+
+#error ... main branch referencing 5.1.0, check out latest version seen...
+cd /opt/wazuh-docker
+
+
+#4.9.2 or latest
+git checkout v4.9.2
+git tag | tail -20
+
+#check versions
+cd single-node
+grep image docker-compose.yml
+
+#clean fail deployment and bring stack back up/run
+docker-compose down
+docker-compose pull
+docker-compose up -d
+
+#if  error, cannot start failed to create shim task, operation not permitted container creation
+#within proxmox ensure .conf for ct has unpriviledged=0 and:
+  features: nesting=1,keyctl=1
+  lxc.cgroup.devices.allow:a
+###############
