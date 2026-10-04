@@ -22,7 +22,7 @@ sudo systemctl enable --now xrdp
 
 
 
--------------------
+------------------- visibility/threat hunt main directory as desktop
 #building zeek from source, due to dependency conflicts
 #download dependencies
 sudo apt install -y \
@@ -128,6 +128,21 @@ sudo /usr/local/zeek/bin/zeekctl
 deploy
 status
 
-#check connections live
+#check connections live and view logs from sep term
 tail -f /usr/local/zeek/logs/current/conn.log
+ls -lah /usr/local/zeek/spool/zeek
 
+#- formats as follows...
+      conn.log = who talked to whom
+      dns.log = DNS lookups
+      ssl.log = TLS activity
+      http.log = web traffic metadata
+      files.log = file transfers
+      notice.log = notable events
+-#
+------------------------------ suricata install main dir as desktop
+
+#installing suricata to same vm and run on same network interface
+sudo apt install suricata suricata-update -y
+sudo suricata-update
+sudo suricata -i ens18
