@@ -1,1 +1,21 @@
-#create lxc for wazuh dash
+#create lxc for wazuh dash, install and verify docker functionality
+Debian 12
+6 vCPU
+8GB RAM
+64GB disk
+
+apt update
+
+##issues with install ... deb12 bookworm doesnt have docker-compose-plugin in default repos may need to install them 
+
+apt install -y \
+docker.io \
+docker-compose \
+curl \
+ca-certificates
+
+#check + enable
+docker --version
+docker-compose --version
+systemctl enable docker
+systemctl start docker
