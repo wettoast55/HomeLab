@@ -1,0 +1,16 @@
+VMID: 201
+Name: Wazuh
+CPU:
+Type: host
+Cores: 6
+Memory:
+16384 MB
+Disk:
+100 GB
+Network:
+VirtIO
+x86_64 arm64
+debian 12.12
+
+----------------------
+wazuh.homelab.local
