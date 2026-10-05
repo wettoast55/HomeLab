@@ -14,3 +14,16 @@ debian 12.12
 
 ----------------------
 wazuh.homelab.local
+
+
+#checking sources prior to update/upgrade
+grep -r "^deb" /etc/apt/sources.list*
+
+#editing sources to fix missing release file error
+sudo nano /etc/apt/sources.list
+"
+  deb http://deb.debian.org/debian bookworm main contrib non-free-firmware
+  deb http://security.debian.org/debian-security bookworm-security main contrib non-free-firmware
+  deb http://deb.debian.org/debian bookworm-updates main contrib non-free-firmware
+"
+
