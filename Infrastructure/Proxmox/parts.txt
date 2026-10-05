@@ -94,7 +94,11 @@ Mem:            38Gi        31Gi       7.9Gi        87Mi       448Mi       7.8Gi
 Swap:          8.0Gi       6.4Mi       8.0Gi
 MemTotal:       40810748 kB
 
-
+----------
+#remove subscription popup, edit notif file
+nano /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+#line 555 ish search for "no valid", remove ! boolean in line below, save, reload webinterface
+        res.data.status.toLowerCase() !== 'active'
 
 -------------------
 #UPS USB UPS → Proxmox direct connection
