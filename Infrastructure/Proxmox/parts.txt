@@ -100,17 +100,3 @@ nano /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
 #line 555 ish search for "no valid", remove ! boolean in line below, save, reload webinterface
         res.data.status.toLowerCase() !== 'active'
 
--------------------
-#UPS USB UPS → Proxmox direct connection
-
-#verify Proxmox sees it "American Power Conversion UPS"
-lsusb
-       """Bus 001 Device 002: ID 0764:0501 Cyber Power System, Inc. CP1500 AVR UPS"""
-
-#install NUT network ups tools
-apt update
-apt install nut nut-client nut-server
-
-#start nut server and start status
-systemctl restart nut-server
-upsc ups
