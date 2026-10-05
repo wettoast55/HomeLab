@@ -58,6 +58,9 @@ nano /etc/nut/upsd.users
 nano /etc/nut/upsmon.conf
   MONITOR cst1500s@localhost 1 monuser MyStrongPassword primary
 
+#upsd.users need matching definition
+nano /etc/nut/upsd.users
+
 #restart services 
 systemctl restart nut-monitor
 systemctl restart nut-server
