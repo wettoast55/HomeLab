@@ -81,3 +81,14 @@ SET IP TO DHCP
     
     #assign ownership with output of previous commands
     chown -R 1000:1000 /opt/dashy/user-data
+
+
+---------dashy config for widgets changing conf.yml
+https://wiki.opensourceisawesome.com/books/self-hosted-dashboards/page/adding-widgets-to-the-dashy-dashboard
+
+sections:
+  - name: Aria Info
+    widgets:
+      - type: gl-current-cpu
+        options:
+          hostname: http:192.168.10.209:61208
