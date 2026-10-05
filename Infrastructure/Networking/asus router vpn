@@ -15,3 +15,7 @@ https://openvpn.net/connect-docs/connect-for-windows.html
 certs uploaded
 
 ONLY WORKS WHEN NO AP OR ROUTER NORTH OF ASUS ROUTER UNELSS HAVE PRIV FOR PORT FORD
+
+#using tailscale labwide for all clients
+curl -fsSL https://tailscale.com/install.sh | sh
+sudo tailscale up
