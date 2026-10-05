@@ -77,3 +77,20 @@ upsc cst1500s | grep ups.load
 
 #runtime
 upsc cst1500s | grep battery.runtime
+
+--------------------------------------------------------------
+UPS Battery
+↓
+TrueNAS Shuts Down
+↓
+Other VMs Stop
+↓
+Proxmox Shuts Down Last
+
+#configuring ups to shut off vms with truenas first on power outage
+#configure shutdown order in proxmox gui and enable qemu guest agent in all to allow vms to gracefullly shutdown each os
+#additionally in each os.. and configure shutdown time so any HDD vms have extra time for shtudown --- truenas 600seconds
+apt update
+apt install qemu-guest-agent -y
+systemctl enable --now qemu-guest-agent
+
