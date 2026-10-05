@@ -18,4 +18,4 @@ ONLY WORKS WHEN NO AP OR ROUTER NORTH OF ASUS ROUTER UNELSS HAVE PRIV FOR PORT F
 
 #using tailscale labwide for all clients
 curl -fsSL https://tailscale.com/install.sh | sh
-sudo tailscale up
+sudo systemctl start tailscaled
