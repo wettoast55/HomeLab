@@ -1,0 +1,79 @@
+-------------------
+#UPS USB UPS → Proxmox direct connection
+
+#verify Proxmox sees it "American Power Conversion UPS"
+lsusb
+       """Bus 001 Device 002: ID 0764:0501 Cyber Power System, Inc. CP1500 AVR UPS"""
+
+#install NUT network ups tools onto proxmox host, recheck ups detection
+apt update
+apt install nut nut-client nut-server
+
+#configure NUT, ensure information is correct, start nut server and check status
+
+cat > /etc/nut/ups.conf <<'EOF'
+[cst1500s]
+driver = usbhid-ups
+port = auto
+desc = "CyberPower CST1500S"
+EOF
+
+#check that nut.conf has ups set to standalone not none or other
+grep MODE /etc/nut/nut.conf
+    ->> should looke like "MODE=standalone"
+-------------------
+
+#TROUBLESHOOTING - USB permissions default set rw-rw-r--
+#nut user did not have permission to access  ups
+#check nut package install, should list nut, nut-client, nut-server
+dpkg -l | grep -E '^ii.*nut'
+find / -name "usbhid-ups" 2>/dev/null
+ls -l /dev/bus/usb/001/002
+grep MODE /etc/nut/nut.conf
+
+#reinstall usb drivers and service status
+apt install nut-usb -y
+systemctl status nut-driver@cst1500s.service --no-pager -l
+journalctl -u nut-driver@cst1500s.service -n 50 --no-pager
+
+#make device accessible temporarily, then test visibility via usb
+chmod 666 /dev/bus/usb/001/002
+/usr/lib/nut/usbhid-ups -a cst1500s
+
+#test visibility and metrics
+upsc cst1500s
+
+#set services start on boot
+systemctl enable nut-server
+systemctl enable nut-monitor
+systemctl enable nut-driver@cst1500s
+
+#config auto shutdown
+nano /etc/nut/upsd.users
+
+  [monuser]
+  password = MyStrongPassword
+  upsmon primary
+
+nano /etc/nut/upsmon.conf
+  MONITOR cst1500s@localhost 1 monuser MyStrongPassword primary
+
+#restart services 
+systemctl restart nut-monitor
+systemctl restart nut-server
+
+#verify (WILL CAUSE SHUTDOWN IF RUN)
+upsmon -c fsd
+
+------------------
+#health check
+upsc cst1500s
+
+#battery status
+upsc cst1500s | grep battery
+
+#load
+upsc cst1500s | grep ups.load
+
+#runtime
+upsc cst1500s | grep battery.runtime
