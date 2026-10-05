@@ -1,0 +1,17 @@
+https://www.asus.com/support/faq/1033906/
+
+VPN tunnels and port numbers
+PPTP
+TCP 1723, Other 47
+
+OpenVPN
+UDP 1194
+
+IPSec
+UDP 500, UDP 4500
+
+openvpn via router
+https://openvpn.net/connect-docs/connect-for-windows.html
+certs uploaded
+
+ONLY WORKS WHEN NO AP OR ROUTER NORTH OF ASUS ROUTER UNELSS HAVE PRIV FOR PORT FORD
