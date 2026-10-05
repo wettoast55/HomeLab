@@ -71,3 +71,13 @@ SET IP TO DHCP
   net0: name=eth0,bridge=vmbr0,firewall=1,hwaddr=BC:24:11:DA:FF:CC,ip=dhcp,type=veth
 
   #save restart ct
+
+#ISSUE 2 - unable to save changes to dash from dash natively, most likely permission error
+    #inside dashy ct
+    ls -lah /opt/dashy/user-data
+    
+    #find uid/gid dashy runs as
+    docker exec dashy id
+    
+    #assign ownership with output of previous commands
+    chown -R 1000:1000 /opt/dashy/user-data
