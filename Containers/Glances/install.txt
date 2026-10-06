@@ -1,7 +1,10 @@
 cloned and renamed dashy container snap
-changed ip to 192.168.50.4/24
+changed ip to 192.168.50.4/24 and updated dns to 1.1.1.1
 Welcome to Ubuntu 24.04.5 LTS (GNU/Linux 7.0.14-12-pve x86_64)
 
 #update container and install glances
 apt update
 apt install glances -y
+
+#start web up and access @http://CT-IP:61208
+glances -w
