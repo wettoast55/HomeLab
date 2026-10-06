@@ -22,3 +22,8 @@ ipv4: 192.168.50.79 ... port 80 for webadmin
 sudo nmtui
 #edit ipv4 config, set address, gateway, dns 1.1.1.1,8.8.8.8 then restart nm, ip a for verification
 sudo systemctl restart NetworkManager
+
+
+#Pi-hole v6 Changes From v6 onwards, Pi-hole migrates to /etc/pihole/pihole.toml
+#to get api key for dashy use, 64-character located on the line that starts with WEBPASSWORD
+sudo nano /etc/pihole/pihole.toml
