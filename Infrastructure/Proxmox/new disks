@@ -1,0 +1,22 @@
+addition of new nvme into pcie slot using third party adapter
+
+#check visibility
+lsblk
+
+#wipe and format new disk then create filesystem
+wipefs -a /dev/nvme1n1 
+mkfs.ext4 /dev/nvme1n1
+
+#get uuid for disk
+blkid /dev/nvme1n1
+
+#create mount point for new drive
+mkdir /mnt/nvme-secondary
+
+#modify fstab to add new drive mount using uuid of disk
+nano /etc/fstab 
+"    UUID=1234-5678-ABCD /mnt/nvme-storage ext4 defaults 0 2    "
+
+#refresh and mount, then add via proxmox gui
+systemctl daemon-reload
+mount -a
