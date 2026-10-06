@@ -55,3 +55,9 @@ pvesm add lvmthin nvme2-thin \
 
 #verify
 pvesm status
+
+
+#-------------------reducing disk size in vm and clone/moving to different nvme with clonezilla
+#add new storage and connect to vm (scsi1 = 100 GB (nvme2-thin))
+#add/mount Clonezilla live version: 3.3.3-37 iso amd64..https://clonezilla.org/downloads/download.php?branch=stable
+
