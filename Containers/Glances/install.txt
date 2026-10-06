@@ -4,7 +4,14 @@ Welcome to Ubuntu 24.04.5 LTS (GNU/Linux 7.0.14-12-pve x86_64)
 
 #update container and install glances
 apt update
-apt install glances -y
+apt install python3-venv -y
+
+mkdir -p /opt/glances
+python3 -m venv /opt/glances/venv
+source /opt/glances/venv/bin/activate
+
+pip install wheel
+pip install "glances[web]"
 
 #start web up and access @http://CT-IP:61208
-glances -w
+/opt/glances/venv/bin/glances -w
