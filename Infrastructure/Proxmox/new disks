@@ -59,5 +59,10 @@ pvesm status
 
 #-------------------reducing disk size in vm and clone/moving to different nvme with clonezilla
 #add new storage and connect to vm (scsi1 = 100 GB (nvme2-thin))
-#add/mount Clonezilla live version: 3.3.3-37 iso amd64..https://clonezilla.org/downloads/download.php?branch=stable
+#add/mount gparted and Clonezilla live version: 3.3.3-37 iso amd64..https://clonezilla.org/downloads/download.php?branch=stable
+  1. shrink partition using gparted so partitions are smaller than new target disk
+  2. boot up clonezilla live
+  3. go through wizard, disk-disk, disk-to-local-disk, choose source and target devices
+
+
 
