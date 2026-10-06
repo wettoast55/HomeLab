@@ -1,14 +1,32 @@
 #proxmox host installing tailscale, assuming proxmox configured already on device
 curl -fsSL https://tailscale.com/install.sh | sh
 
-#bringing it onlinle and setting subnet to advertise (all within range of 192.168.50.1-192.168.50.254)
-tailscale up --advertise-routes=192.168.50.0/24
-
 #enable ip forwarding
 sysctl net.ipv4.ip_forward
 
 #if doesnt look like net.ipv4.ip_forward = 1, update it
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 sysctl -p
+
+#checking status of ip forwarding on system, both should have 1 values to be valid
+sysctl net.ipv4.ip_forward
+sysctl net.ipv6.conf.all.forwarding
+
+  #temporarily enable
+  sysctl -w net.ipv4.ip_forward=1
+  sysctl -w net.ipv6.conf.all.forwarding=1
+
+#Persistant config to enable, create config file
+nano /etc/sysctl.d/99-tailscale.conf
+  net.ipv4.ip_forward = 1
+  net.ipv6.conf.all.forwarding = 1
+
+#apply changes and restart service
+sysctl --system
+systemctl restart tailscaled
+
+###---MAY NEED TO READVERTISE AFTER REBOOT__
+#bringing it onlinle and setting subnet to advertise (all within range of 192.168.50.1-192.168.50.254)
+tailscale up --advertise-routes=192.168.50.0/24
 
 #access tailscale and check network->machines->proxmox host->subnets and approve routes
