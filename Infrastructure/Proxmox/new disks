@@ -25,3 +25,33 @@ mount -a
 #moving/cloning vm storages to new drive
   1. within proxmox gui, select storage of vm within it's hardware tab
   2 disk action -> move storage
+
+#--------------
+#show all drives
+lsblk -o NAME,SIZE,TYPE,MOUNTPOINT
+
+#show physical, group, and lvmthin pool volumes 
+pvs
+vgs
+lvs
+
+ NVMe0 (500GB)
+  └─ VG: pve
+    ├─ root 96G
+    ├─ swap 8G
+    └─ data 347.9G (LVM-Thin)  
+
+#wipe newnvme drive and reat new lvmthin
+umount /dev/nvme1n1*
+wipefs -a /dev/nvme1n1
+pvcreate /dev/nvme1n1
+vgcreate nvme2-vg /dev/nvme1n1
+lvcreate -l 100%FREE -T nvme2-vg/nvme2-thin
+
+#add thinpool to proxmox
+pvesm add lvmthin nvme2-thin \
+--vgname nvme2-vg \
+--thinpool nvme2-thin
+
+#verify
+pvesm status
