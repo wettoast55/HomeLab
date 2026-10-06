@@ -63,6 +63,7 @@ pvesm status
   1. shrink partition using gparted so partitions are smaller than new target disk
   2. boot up clonezilla live
   3. go through wizard, disk-disk, disk-to-local-disk, choose source and target devices
-
-
-
+  4. flags to ignore destination disk size and create partition table porportinately...
+      -icds
+      -k1
+  5. WILL CRASH unless memory lowered inside vm, filzilla uses up EVERYTIHNGN
