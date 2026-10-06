@@ -20,3 +20,8 @@ nano /etc/fstab
 #refresh and mount, then add via proxmox gui
 systemctl daemon-reload
 mount -a
+
+-----------------
+#moving/cloning vm storages to new drive
+  1. within proxmox gui, select storage of vm within it's hardware tab
+  2 disk action -> move storage
