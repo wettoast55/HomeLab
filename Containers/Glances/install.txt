@@ -15,3 +15,6 @@ pip install "glances[web]"
 
 #start web up and access @http://CT-IP:61208
 /opt/glances/venv/bin/glances -w
+
+
+###GLANCES INSTALLED ONTO PROXMOX HOST FOR NODE MONITORING NOT JUST CT####
