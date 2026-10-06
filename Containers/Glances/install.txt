@@ -17,4 +17,21 @@ pip install "glances[web]"
 /opt/glances/venv/bin/glances -w
 
 
-###GLANCES INSTALLED ONTO PROXMOX HOST FOR NODE MONITORING NOT JUST CT####
+###GLANCES INSTALLED ONTO PROXMOX HOST FOR NODE MONITORING NOT JUST CT#### auto start
+#creat service
+nano /etc/systemd/system/glances.service
+  [Unit]
+  Description=Glances Web Monitoring
+  After=network.target
+  some stray text
+  [Service]
+  Type=simple
+  ExecStart=/opt/glances/venv/bin/glances -w
+  Restart=always
+  [Install]
+  WantedBy=multi-user.target
+
+#refresh, restart, and check
+systemctl daemon-reload
+systemctl restart glances
+systemctl status glances
