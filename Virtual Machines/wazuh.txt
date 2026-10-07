@@ -51,3 +51,43 @@ ls /usr/share/xsessions
 #make executable and restart xrdp
 chmod +x ~/.xsession
 sudo systemctl restart xrdp
+
+
+
+### wazuh install
+##install docker on debian vm first
+sudo apt install -y \
+docker.io \
+docker-compose \
+git \
+curl \
+ca-certificates
+
+#start docker verify
+sudo systemctl enable --now docker
+docker --version
+docker-compose --version
+sudo docker ps
+
+#configure opensearch requirements for wazuh indexer
+echo "vm.max_map_count=262144" | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+
+#verify
+sysctl vm.max_map_count'
+
+#clone wazuh
+cd /opt
+sudo git clone https://github.com/wazuh/wazuh-docker.git
+cd wazuh-docker
+sudo git checkout v4.9.2
+cd single-node
+
+#start wazuh check status
+sudo docker-compose pull
+sudo docker-compose up -d
+sudo docker ps
+  ##should show wazuh manager, indexer, dashboard all up
+
+#enter wazuh https://<WAZUH-IP>
+
