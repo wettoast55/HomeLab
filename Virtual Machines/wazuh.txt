@@ -149,6 +149,29 @@ sudo systemctl enable --now wazuh-agent
 #key registration log... will show successful connection
 sudo tail -f /var/ossec/logs/ossec.log
 
+
+#----configure wazuh agent to read zeek ON PARROT
+#update ossec conf adding it into ossec_config section
+sudo nano /var/ossec/etc/ossec.conf
+
+<localfile>
+<log_format>json</log_format>
+<location>/usr/local/zeek/logs/current/conn.log</location>
+</localfile>
+ 
+<localfile>
+<log_format>json</log_format>
+<location>/usr/local/zeek/logs/current/dns.log</location>
+</localfile>
+ 
+<localfile>
+<log_format>json</log_format>
+<location>/usr/local/zeek/logs/current/ssl.log</location>
+</localfile>
+
+#restart service
+sudo systemctl restart wazuh-agent
+
 #---------troubleshooting agent install .. AGENT MUST MATCH MAIN VERSION
 #checking agent installation
 dpkg -l | grep wazuh-agent
@@ -167,3 +190,4 @@ sudo nano /var/ossec/etc/ossec.conf
 
 #restart service
 sudo systemctl restart wazuh-agent
+
