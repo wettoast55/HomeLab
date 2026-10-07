@@ -35,7 +35,7 @@ sudo apt install -y xrdp
 sudo systemctl enable --now xrdp
 sudo systemctl status xrdp
 
-#allow xrdp to access certificates
+#allow 'xrdp' to access certificates and restart service
 sudo adduser xrdp ssl-cert
 sudo systemctl restart xrdp
 
