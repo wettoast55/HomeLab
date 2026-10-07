@@ -15,3 +15,16 @@ VNet: security
 ├── Zeek
 ├── Suricata
 └── TryHackMe boxes
+
+
+Network Traffic
+↓
+Suricata + Zeek?
+↓
+eve.json
+↓
+Wazuh Agent
+↓
+Wazuh Manager
+↓
+Dashboard
