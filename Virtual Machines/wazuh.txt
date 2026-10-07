@@ -54,7 +54,7 @@ sudo systemctl restart xrdp
 
 
 
-### wazuh install
+### wazuh install 
 ##install docker on debian vm first
 sudo apt install -y \
 docker.io \
@@ -136,18 +136,20 @@ sudo nano docker-compose.yml
 sudo docker-compose down
 sudo docker-compose up -d
 
-#------------------------------- connecting sensors to wazuh as agent, on source device...
-curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | \
-sudo gpg --dearmor -o /usr/share/keyrings/wazuh.gpg
+#------------------------------- connecting sensors to wazuh as agent, on source device... MSUT MATCH VERSIONS WITH WAZUH MAIN
 echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | \
 sudo tee /etc/apt/sources.list.d/wazuh.list
-sudo apt update
-sudo WAZUH_MANAGER="IP-of-WAZUH-DASH" apt install wazuh-agent
+
+#install agent... using 4.9.2 for main... change ip as needed based on static
+sudo WAZUH_MANAGER="192.168.50.107" apt install -y wazuh-agent=4.9.2-1
 
 #enable agent
 sudo systemctl enable --now wazuh-agent
 
-#---------troubleshooting agent install
+#key registration log... will show successful connection
+sudo tail -f /var/ossec/logs/ossec.log
+
+#---------troubleshooting agent install .. AGENT MUST MATCH MAIN VERSION
 #checking agent installation
 dpkg -l | grep wazuh-agent
 
@@ -162,3 +164,6 @@ sudo grep "Connected" /var/ossec/logs/ossec.log | tail
 
 #edit ossec.conf if ip changed 
 sudo nano /var/ossec/etc/ossec.conf
+
+#restart service
+sudo systemctl restart wazuh-agent
