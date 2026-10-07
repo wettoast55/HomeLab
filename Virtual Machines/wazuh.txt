@@ -157,7 +157,7 @@ sudo nano /var/ossec/etc/ossec.conf
 <localfile>
 <log_format>json</log_format>
 <location>/usr/local/zeek/logs/current/conn.log</location>
-</localfile>
+</localfile>, 
  
 <localfile>
 <log_format>json</log_format>
@@ -169,8 +169,30 @@ sudo nano /var/ossec/etc/ossec.conf
 <location>/usr/local/zeek/logs/current/ssl.log</location>
 </localfile>
 
+###--- config wazuh to read suricata logs
+#update ossec conf adding it into ossec_config section
+
+<localfile>
+<log_format>json</log_format>
+<location>/var/log/suricata/eve.json</location>
+</localfile>
+
 #restart service
 sudo systemctl restart wazuh-agent
+
+###troubleshooting suricata - pointed to wrong wifi interface, in this case was set to eth0 needs to be ens18
+#check references 3x ... line 622, 819, 2026
+grep -n "eth0" /etc/suricata/suricata.yaml
+
+#edit file to update interface pointers
+sudo nano /etc/suricata/suricata.yaml
+
+#test config should result in successful loading
+sudo suricata -T -c /etc/suricata/suricata.yaml
+
+#restart service and verify
+sudo systemctl restart suricata
+sudo systemctl status suricata --no-pager
 
 #---------troubleshooting agent install .. AGENT MUST MATCH MAIN VERSION
 #checking agent installation
