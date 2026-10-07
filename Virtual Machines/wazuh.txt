@@ -144,4 +144,8 @@ sudo tee /etc/apt/sources.list.d/wazuh.list
 sudo apt update
 sudo WAZUH_MANAGER="IP-of-WAZUH-DASH" apt install wazuh-agent
 
+#enable agent
+sudo systemctl enable --now wazuh-agent
+
+
 
