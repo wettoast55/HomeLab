@@ -142,6 +142,33 @@ ls -lah /usr/local/zeek/spool/zeek
       files.log = file transfers
       notice.log = notable events
 -#
+
+
+----------------------
+#zeek auto start, check status
+systemctl status zeek
+
+#if no service, create it
+sudo nano /etc/systemd/system/zeek.service
+"
+  [Unit]
+  Description=Zeek Network Security Monitor
+  After=network-online.target
+  [Service]
+  Type=forking
+  ExecStart=/usr/local/zeek/bin/zeekctl deploy
+  ExecStop=/usr/local/zeek/bin/zeekctl stop
+  RemainAfterExit=yes 
+  [Install]
+  WantedBy=multi-user.target
+"
+
+#enable zeek and verify
+sudo systemctl daemon-reload
+sudo systemctl enable zeek
+sudo systemctl start zeek
+systemctl status zeek
+
 ------------------------------ suricata alerting & signatures - install main dir as desktop 
 
 #installing suricata to same vm and run on same network interface
