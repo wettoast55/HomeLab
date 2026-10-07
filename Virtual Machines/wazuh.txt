@@ -147,5 +147,18 @@ sudo WAZUH_MANAGER="IP-of-WAZUH-DASH" apt install wazuh-agent
 #enable agent
 sudo systemctl enable --now wazuh-agent
 
+#---------troubleshooting agent install
+#checking agent installation
+dpkg -l | grep wazuh-agent
 
+#checking agent service status
+sudo systemctl status wazuh-agent
 
+#checking agent boot enabled
+sudo systemctl is-enabled wazuh-agent
+
+#check connection to manager
+sudo grep "Connected" /var/ossec/logs/ossec.log | tail
+
+#edit ossec.conf if ip changed 
+sudo nano /var/ossec/etc/ossec.conf
