@@ -22,8 +22,32 @@ grep -r "^deb" /etc/apt/sources.list*
 #editing sources to fix missing release file error
 sudo nano /etc/apt/sources.list
 "
-  deb http://deb.debian.org/debian bookworm main contrib non-free-firmware
-  deb http://security.debian.org/debian-security bookworm-security main contrib non-free-firmware
-  deb http://deb.debian.org/debian bookworm-updates main contrib non-free-firmware
+deb http://deb.debian.org/debian bookworm main contrib non-free-firmware
+deb http://security.debian.org/debian-security bookworm-security main contrib non-free-firmware
+deb http://deb.debian.org/debian bookworm-updates main contrib non-free-firmware
 "
 
+sudo apt update
+sudo apt upgrade
+
+#install/enable/check clipboard between windows pc and debian vm
+sudo apt install -y xrdp
+sudo systemctl enable --now xrdp
+sudo systemctl status xrdp
+
+#allow xrdp to access certificates
+sudo adduser xrdp ssl-cert
+sudo systemctl restart xrdp
+
+#show installed desktop environments 
+ls /usr/share/xsessions
+
+  if xfce: echo "exec startxfce4" > ~/.xsession
+  if lxqt: echo "exec startlxqt" > ~/.xsession
+  if gnome: echo "export GNOME_SHELL_SESSION_MODE=ubuntu
+      export XDG_CURRENT_DESKTOP=ubuntu:GNOME
+      exec gnome-session" > ~/.xsession
+
+#make executable and restart xrdp
+chmod +x ~/.xsession
+sudo systemctl restart xrdp
