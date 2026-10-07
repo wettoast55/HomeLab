@@ -91,3 +91,57 @@ sudo docker ps
 
 #enter wazuh https://<WAZUH-IP>
 
+##---troubleshooting restarting nodes... check certificate creation files were never generated
+  #correctly, and Docker mounted directories where certificate files should be
+  
+  #verify certs ... wazuh.indexer.pem, wazuh.indexer-key.pem, root-ca.pem are visible or not
+  cd /opt/wazuh-docker/single-node
+
+  #stop wazuh
+  sudo docker-compose down
+
+  #find any bad diurectories
+  find config -type d | grep -E "pem|cert"
+
+  #clean generated cert directories
+  sudo find config -type d -name "*.pem" -exec rm -rf {} \;
+  
+  #regen certs, then verify they are files not just dirs(filecodes starts with r not d)
+  sudo docker-compose -f generate-indexer-certs.yml run --rm generator
+  sudo find config -name "*.pem" -exec ls -ld {} \;
+
+  #rebuild and check
+  sudo docker-compose up -d
+  sudo docker ps
+
+#---------------set auto start
+# verify docker starts on vm boot
+sudo systemctl enable docker
+sudo systemctl status docker
+
+#check wazuh restart policies
+sudo docker inspect single-node_wazuh.manager_1 | grep -i RestartPolicy -A3
+
+#if policies missing... create and restart 
+cd /opt/wazuh-docker/single-node
+sudo nano docker-compose.yml
+"
+  wazuh.manager:
+  restart: always
+  wazuh.indexer:
+  restart: always
+  wazuh.dashboard:
+  restart: always
+"
+sudo docker-compose down
+sudo docker-compose up -d
+
+#------------------------------- connecting sensors to wazuh as agent, on source device...
+curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | \
+sudo gpg --dearmor -o /usr/share/keyrings/wazuh.gpg
+echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | \
+sudo tee /etc/apt/sources.list.d/wazuh.list
+sudo apt update
+sudo WAZUH_MANAGER="IP-of-WAZUH-DASH" apt install wazuh-agent
+
+
