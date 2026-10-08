@@ -213,3 +213,14 @@ sudo nano /var/ossec/etc/ossec.conf
 #restart service
 sudo systemctl restart wazuh-agent
 
+#----adding router syslogs using router ip address and wazuh address
+<remote>
+  <connection>syslog</connection>
+  <port>514</port>
+  <protocol>udp</protocol>
+  <allowed-ips>192.168.50.1/24</allowed-ips>
+  <local_ip>192.168.50.107/24</local_ip>
+</remote>
+
+#restart service then add wazuh server settings onto router itself
+sudo systemctl restart wazuh-manager
