@@ -1,0 +1,19 @@
+#set up of telegram notifications ... ups script
+nano /usr/local/bin/ups-telegram.sh
+"
+  #!/bin/bash
+  
+  TOKEN="YOUR_BOT_TOKEN"
+  CHAT_ID="YOUR_CHAT_ID"
+  
+  MESSAGE="$1"
+  
+  curl -s -X POST \
+  "https://api.telegram.org/bot/${TOKEN}/sendMessage" \
+  -d chat_id="${CHAT_ID}" \
+  -d text="${MESSAGE}" > /dev/null
+"
+
+#make script executable and test
+chmod +x /usr/local/bin/ups-telegram.sh
+/usr/local/bin/ups-telegram.sh "UPS is on battery"
