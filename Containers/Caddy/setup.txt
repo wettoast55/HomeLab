@@ -1,0 +1,73 @@
+#cloned container from ct template with docker
+apt update
+apt install -y debian-keyring debian-archive-keyring curl
+
+#check and update source
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' > /etc/apt/sources.list.d/caddy-stable.list
+
+apt update
+apt install -y caddy
+
+#verify
+systemctl status caddy
+
+#------------------editing caddyfile
+nano /etc/caddy/Caddyfile
+
+#init dns template
+proxmox.homelab.local {
+    reverse_proxy https://192.168.50.2:8006 {
+        transport http {
+            tls_insecure_skip_verify
+        }
+    }
+}
+
+wazuh.homelab.local {
+    reverse_proxy http://192.168.50.107:443
+}
+
+dashy.homelab.local {
+    reverse_proxy http://192.168.50.3:8088
+}
+
+pihole.homelab.local {
+    reverse_proxy http://192.168.50.100
+}
+
+#for tailscale access in furture --------------
+proxmox.your-tailnet.ts.net {
+    reverse_proxy https://192.168.50.2:8006 {
+        transport http {
+            tls_insecure_skip_verify
+        }
+    }
+}
+--------------------
+
+# validate caddy config and reload service
+caddy validate --config /etc/caddy/Caddyfile
+systemctl reload caddy
+
+#add local dns records within pihole or whatever dns is being used
+proxmox.homelab.local -> 192.168.50.210
+wazuh.homelab.local   -> 192.168.50.210
+dashy.homelab.local   -> 192.168.50.210
+pihole.homelab.local  -> 192.168.50.210
+
+
+Browser
+   ↓
+Pi-hole DNS
+   ↓
+Caddy
+   ↓
+Backend Service
+
+
+
+
+
+
+
