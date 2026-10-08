@@ -66,8 +66,20 @@ Caddy
 Backend Service
 
 
+#-----------------caddy root ca setup for "not secure"
+#check for root crt and key on caddy server and show path
+ls /var/lib/caddy/.local/share/caddy/pki/authorities/local
+find /var/lib/caddy -name root.crt
 
+#copy cert to pc/or other device or download via scp
+scp root@192.168.50.4:/var/lib/caddy/.local/share/caddy/pki/authorities/local/root.crt
 
+#on device accessing proxmox/windows
+Win + R
+certmgr.msc
 
+#go to certs and import root.crt, then verify by visiting sites
+Trusted Root Certification Authorities
+    Certificates
 
 
