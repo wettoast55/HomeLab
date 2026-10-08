@@ -18,3 +18,70 @@ nano /usr/local/bin/ups-telegram.sh
 #make script executable and test
 chmod +x /usr/local/bin/ups-telegram.sh
 /usr/local/bin/ups-telegram.sh "UPS is on battery"
+
+#create ups monitor for battery, show currently connected ups and status
+upsc -l
+upsc $(upsc -l | head -1)
+
+#create ups monitoring script
+nano /usr/local/bin/ups-monitor.sh
+"
+
+  #!/bin/bash
+  UPS="cst1500s"
+  STATEFILE="/tmp/ups_status"
+  
+  CURRENT=$(upsc "$UPS" ups.status 2>/dev/null)
+  PREVIOUS=$(cat "$STATEFILE" 2>/dev/null)
+  
+  if [[ "$CURRENT" == "OB" && "$PREVIOUS" != "OB" ]]; then
+      /usr/local/bin/ups-telegram.sh "ALERT: UPS ON BATTERY - Proxmox is running on battery power"
+  fi
+  
+  if [[ "$CURRENT" == OL* && "$PREVIOUS" == "OB" ]]; then
+      /usr/local/bin/ups-telegram.sh "ALERT: UPS POWER RESTORED - Utility power has returned"
+  fi
+  
+  echo "$CURRENT" > "$STATEFILE"
+
+
+"
+
+#make script executable
+chmod +x /usr/local/bin/ups-monitor.sh
+
+#run script every 5 minutes
+crontab -e
+*/5 * * * * /usr/local/bin/ups-monitor.sh
+
+#run every min * * * * * /usr/local/bin/ups-monitor.sh
+
+#verify
+crontab -l
+
+#test by setting ups_status to OB (on battery vs OL on line)
+echo OB >/tmp/ups_status
+/usr/local/bin/ups-monitor.sh
+
+
+
+#making another alert for sys resources, same methodology and add to cron set to minute checks
+"
+#!/bin/bash
+
+CPU=$(top -bn1 | awk '/Cpu/ {print int($2)}')
+MEM=$(free | awk '/Mem:/ {printf("%.0f",$3/$2*100)}')
+DISK=$(df / | awk 'END {gsub("%",""); print $5}')
+
+if [ "$CPU" -gt 80 ]; then
+    /usr/local/bin/telegram-send.sh "ALERT Proxmox CPU usage is ${CPU}%"
+fi
+
+if [ "$MEM" -gt 80 ]; then
+    /usr/local/bin/telegram-send.sh "ALERT: Proxmox RAM usage is ${MEM}%"
+fi
+
+if [ "$DISK" -gt 80 ]; then
+    /usr/local/bin/telegram-send.sh "ALERT: Proxmox disk usage is ${DISK}%"
+fi
+"
