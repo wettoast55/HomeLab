@@ -1,5 +1,5 @@
 #set up of telegram notifications ... ups script
-nano /usr/local/bin/ups-telegram.sh
+nano /usr/local/bin/send-telegram.sh
 
 #replace NEW_BOT_TOKEN and actual chat id
 "
@@ -25,26 +25,29 @@ upsc $(upsc -l | head -1)
 
 #create ups monitoring script
 nano /usr/local/bin/ups-monitor.sh
+
 "
+#!/bin/bash
 
-  #!/bin/bash
-  UPS="cst1500s"
-  STATEFILE="/tmp/ups_status"
-  
-  CURRENT=$(upsc "$UPS" ups.status 2>/dev/null)
-  PREVIOUS=$(cat "$STATEFILE" 2>/dev/null)
-  
-  if [[ "$CURRENT" == "OB" && "$PREVIOUS" != "OB" ]]; then
-      /usr/local/bin/ups-telegram.sh "ALERT: UPS ON BATTERY - Proxmox is running on battery power"
-  fi
-  
-  if [[ "$CURRENT" == OL* && "$PREVIOUS" == "OB" ]]; then
-      /usr/local/bin/ups-telegram.sh "ALERT: UPS POWER RESTORED - Utility power has returned"
-  fi
-  
-  echo "$CURRENT" > "$STATEFILE"
+#denotes ups status type/location
+UPS="cst1500s"
+STATEFILE="/tmp/ups_status"
 
+#for changes in ups
+CURRENT=$(upsc "$UPS" ups.status 2>/dev/null)
+PREVIOUS=$(cat "$STATEFILE" 2>/dev/null)
 
+#if ups on battery power
+if [[ "$CURRENT" == "OB" && "$PREVIOUS" != "OB" ]]; then
+    /usr/local/bin/send-telegram.sh "ALERT: UPS ON BATTERY - Proxmox is running on battery power"
+fi
+
+#if ups back on line power
+if [[ "$CURRENT" == OL* && "$PREVIOUS" == "OB" ]]; then
+    /usr/local/bin/send-telegram.sh "ALERT: UPS POWER RESTORED - Utility power has returned"
+fi
+
+echo "$CURRENT" > "$STATEFILE"
 "
 
 #make script executable
@@ -54,8 +57,10 @@ chmod +x /usr/local/bin/ups-monitor.sh
 crontab -e
 */5 * * * * /usr/local/bin/ups-monitor.sh
 
-#run every min * * * * * /usr/local/bin/ups-monitor.sh
-
+          #run every min * * * * * /usr/local/bin/ups-monitor.sh
+          #run every 15 mins */15 * * * * command
+          #run every hour 0 * * * * command
+          $run every day at 8am 0 8 * * * command'
 #verify
 crontab -l
 
@@ -65,23 +70,29 @@ echo OB >/tmp/ups_status
 
 
 
-#making another alert for sys resources, same methodology and add to cron set to minute checks
+#making another alert for sys resources, same methodology and add to cron set to minute checks resource-alerts.sh will point to send-telegram script
 "
+                                                                  
 #!/bin/bash
 
+#gets vars for resource usage
 CPU=$(top -bn1 | awk '/Cpu/ {print int($2)}')
 MEM=$(free | awk '/Mem:/ {printf("%.0f",$3/$2*100)}')
 DISK=$(df / | awk 'END {gsub("%",""); print $5}')
 
+#send telegram alert if cpu over 80% utilization
 if [ "$CPU" -gt 80 ]; then
-    /usr/local/bin/telegram-send.sh "ALERT Proxmox CPU usage is ${CPU}%"
+    /usr/local/bin/send-telegram.sh "ALERT Proxmox CPU usage is ${CPU}%"
 fi
 
+#send telegram alert if memory over 80% utilization
 if [ "$MEM" -gt 80 ]; then
-    /usr/local/bin/telegram-send.sh "ALERT: Proxmox RAM usage is ${MEM}%"
+    /usr/local/bin/send-telegram.sh "ALERT: Proxmox RAM usage is ${MEM}%"
 fi
 
+#send telegram alert if disk storage over 80% full
 if [ "$DISK" -gt 80 ]; then
-    /usr/local/bin/telegram-send.sh "ALERT: Proxmox disk usage is ${DISK}%"
+    /usr/local/bin/send-telegram.sh "ALERT: Proxmox disk usage is ${DISK}%"
 fi
+
 "
