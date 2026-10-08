@@ -96,3 +96,36 @@ if [ "$DISK" -gt 80 ]; then
 fi
 
 "
+
+#---------------autoshutdown script also pointing to telegram alert and add to cron
+nano /usr/local/bin/ups-shutdown.sh
+"
+
+#!/bin/bash
+UPS="cst1500s"
+
+CHARGE=$(upsc $UPS battery.charge 2>/dev/null)
+
+#conduct auto shutdown of Proxmox services once at/below 50%
+if [ "$CHARGE" -le 50 ]; then
+    /usr/local/bin/send-telegram.sh "ALERT: UPS battery at ${CHARGE}% - shutting down VMs and CTs now"
+    qm shutdown --all
+    pct shutdown --all
+fi
+
+#conduct auto shutdown of Proxmox host once at/below 30%
+if [ "$CHARGE" -le 30 ]; then
+    /usr/local/bin/telegram-send.sh "ALERT: UPS battery at ${CHARGE}% - shutting dow nProxmox Host in 60 seconds"
+
+    sleep 60
+    shutdown -h now
+fi
+
+"
+
+#current crontab -e
+"
+*/5 * * * * /usr/local/bin/ups-monitor.sh
+*/5 * * * * /usr/local/bin/resource-alerts.sh
+*/5 * * * * /usr/local/bin/ups-shutdown.sh
+"
