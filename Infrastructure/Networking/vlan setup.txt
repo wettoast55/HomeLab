@@ -25,7 +25,8 @@ sudo systemctl start tailscaled
 bridge-vlan-aware yes
 
 #then add vlan tags to devices from proxmox host...
-VLAN 10  Management
-VLAN 20  Services
-VLAN 30  Security
+VLAN 10  Management/Security
+VLAN 20 Infrastructure
+VLAN 30 Services
+VLAN 100 Lab
 
