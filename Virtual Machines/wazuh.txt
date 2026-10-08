@@ -214,6 +214,14 @@ sudo nano /var/ossec/etc/ossec.conf
 sudo systemctl restart wazuh-agent
 
 #----adding router syslogs using router ip address and wazuh address
+#going into docker to edit files, put next to first <remote> connection
+sudo docker exec -it single-node_wazuh.manager_1 bash
+
+#if nano missing on amazon linux
+yum install nano
+/var/ossec/etc/ossec.conf
+"
+
 <remote>
   <connection>syslog</connection>
   <port>514</port>
@@ -222,6 +230,7 @@ sudo systemctl restart wazuh-agent
   <local_ip>192.168.50.4/24</local_ip>
 </remote>
 
+"
 #restart service then add wazuh server settings onto router itself
 sudo systemctl restart wazuh-manager
 
