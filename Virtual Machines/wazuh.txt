@@ -224,3 +224,11 @@ sudo systemctl restart wazuh-agent
 
 #restart service then add wazuh server settings onto router itself
 sudo systemctl restart wazuh-manager
+
+#=============windows wazuh agent install and start in powershell admin
+Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.9.2-1.msi" -OutFile "$env:TEMP\wazuh-agent.msi"
+msiexec.exe /i "$env:TEMP\wazuh-agent.msi" /qn WAZUH_MANAGER="192.168.50.4" WAZUH_AGENT_NAME="Fury-G7-Laptop"
+
+#start and check service
+Start-Service wazuh
+Get-Service wazuh
