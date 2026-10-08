@@ -19,3 +19,7 @@ ONLY WORKS WHEN NO AP OR ROUTER NORTH OF ASUS ROUTER UNELSS HAVE PRIV FOR PORT F
 #using tailscale labwide for all clients
 curl -fsSL https://tailscale.com/install.sh | sh
 sudo systemctl start tailscaled
+
+#-------------vlan setup
+#enable vlan awareness ... etc/network/interfaces
+bridge-vlan-aware yes
