@@ -80,15 +80,27 @@ ls -lah /mnt/jellyfin
 mkdir -p /opt/docker
 cd /opt/docker
 "
-qbittorrent:
-  image: lscr.io/linuxserver/qbittorrent
-  network_mode: service:gluetun
-  environment:
-    - PUID=1000
-    - PGID=1000
-    - WEBUI_PORT=8080
-  volumes:
-    - /opt/docker/qbittorrent:/config
-    - /mnt/jellyfin/Downloads:/downloads
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+  firefox:
+    image: lscr.io/linuxserver/firefox
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent
+    network_mode: service:gluetun
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - WEBUI_PORT=8080
+    volumes:
+      - /opt/docker/qbittorrent:/config
+      - /mnt/jellyfin/Downloads:/downloads
 "
 
+#pull images
+docker compose up -d
+
+#test permission with mount, update download folder permissions otherwise for unpriv ct
+touch /mnt/jellyfin/Downloads/test.txt
+chmod 777 /mnt/pve/JellyFin/Downloads
