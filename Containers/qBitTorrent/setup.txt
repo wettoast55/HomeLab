@@ -83,19 +83,44 @@ cd /opt/docker
 services:
   gluetun:
     image: qmcgaw/gluetun
-  firefox:
-    image: lscr.io/linuxserver/firefox
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - TZ=America/Chicago
+    ports:
+      - "8080:8080"
+      - "3000:3000"
+    restart: unless-stopped
 
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent
+    container_name: qbittorrent
     network_mode: service:gluetun
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=0
+      - PGID=0
       - WEBUI_PORT=8080
+      - TZ=America/Chicago
     volumes:
       - /opt/docker/qbittorrent:/config
       - /mnt/jellyfin/Downloads:/downloads
+    restart: unless-stopped
+
+  firefox:
+    image: lscr.io/linuxserver/firefox
+    container_name: firefox
+    network_mode: service:gluetun
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=America/Chicago
+    volumes:
+      - /opt/docker/firefox:/config
+    shm_size: "2gb"
+    restart: unless-stopped
 "
 
 #pull images
@@ -103,4 +128,8 @@ docker compose up -d
 
 #test permission with mount, update download folder permissions otherwise for unpriv ct
 touch /mnt/jellyfin/Downloads/test.txt
-chmod 777 /mnt/pve/JellyFin/Downloads
+chmod 777 /mnt/jellyfin/Downloads
+
+
+
+
