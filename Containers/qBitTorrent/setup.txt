@@ -8,6 +8,7 @@ Nesting: Yes
 #static ip set to 192.168.50.6
 
 Docker version 29.9.1, build dfc520d
+Docker Compose version v5.6.0
 
 #link to network share??
 #architecture
@@ -53,5 +54,41 @@ reboot
 #install vpn packages 
 apt install curl wget ufw wireguard-tools
 
-#check cert install and verify docker version, using template already with from other cts
+#check cert install and verify docker version + compose, using template already with from other cts
 apt install -y curl ca-certificates gnupg
+
+#make storage directories
+mkdir -p /opt/docker/gluetun
+mkdir -p /opt/docker/qbittorrent
+mkdir -p /opt/docker/firefox
+
+#add jellyfin nas drive to ct
+#on proxmox host check mounted smb shares from truenas ... shows /mnt/pve/JellyFin as path
+df -h | grep 192.168.50.46
+
+#add mount path to ct.conf from proxmox host
+nano /etc/pve/lxc/105.conf
+"
+	mp0: /mnt/pve/JellyFin,mp=/mnt/jellyfin
+"
+
+#reboot ct and verify while inside it
+reboot 105
+ls -lah /mnt/jellyfin
+
+#create dir for docker files in ct, create compose config for qbittorrent
+mkdir -p /opt/docker
+cd /opt/docker
+"
+qbittorrent:
+  image: lscr.io/linuxserver/qbittorrent
+  network_mode: service:gluetun
+  environment:
+    - PUID=1000
+    - PGID=1000
+    - WEBUI_PORT=8080
+  volumes:
+    - /opt/docker/qbittorrent:/config
+    - /mnt/jellyfin/Downloads:/downloads
+"
+
