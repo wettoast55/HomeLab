@@ -1,9 +1,13 @@
-#creating unpriviledged debian 12 lxc with docker torrent vpn kill switch ct 105
+#creating unpriviledged lxc with docker torrent vpn kill switch ct 105
+Ubuntu 24.04.5 LTS (GNU/Linux 7.0.14-12-pve x86_64)
 2 cores
 3 GB RAM ... 1024mg swap
-24 GB root disk on nvme
+20 GB root disk on nvme
 Unprivileged: Yes
-Nesting: No
+Nesting: Yes
+#static ip set to 192.168.50.6
+
+Docker version 29.9.1, build dfc520d
 
 #link to network share??
 #architecture
@@ -40,7 +44,14 @@ VPN Tunnel
        ▼
 Internet
 
+
+#ct update/upgrade reboot
 apt update
+apt upgrade
+reboot
+
+#install vpn packages 
 apt install curl wget ufw wireguard-tools
 
-apt install docker.io docker-compose -y
+#check cert install and verify docker version, using template already with from other cts
+apt install -y curl ca-certificates gnupg
