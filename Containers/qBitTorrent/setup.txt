@@ -1,1 +1,46 @@
-#creating unpriviledged debian 12 lxc with vpn kill switch ct 105
+#creating unpriviledged debian 12 lxc with docker torrent vpn kill switch ct 105
+2 cores
+3 GB RAM ... 1024mg swap
+24 GB root disk on nvme
+Unprivileged: Yes
+Nesting: No
+
+#link to network share??
+#architecture
+Debian LXC 
+│ ├─ Docker 
+│ ├─ Gluetun 
+│ ├─ qBittorrent 
+│ └─ Firefox 
+│ 
+└─ SMB Mount 
+      └─ TrueNAS Media Storage
+
+Network flow:
+
+Browser Traffic
+       │
+       ▼
+Firefox Container
+       │
+       ▼
+VPN Tunnel (WireGuard)
+       │
+       ▼
+Internet
+....
+Torrent Traffic
+       │
+       ▼
+qBittorrent
+       │
+       ▼
+VPN Tunnel
+       │
+       ▼
+Internet
+
+apt update
+apt install curl wget ufw wireguard-tools
+
+apt install docker.io docker-compose -y
