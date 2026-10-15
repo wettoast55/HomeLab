@@ -213,3 +213,32 @@ sudo nano /var/ossec/etc/ossec.conf
 #restart service
 sudo systemctl restart wazuh-agent
 
+#----adding router syslogs using router ip address and wazuh address
+#going into docker to edit files, put next to first <remote> connection
+sudo docker exec -it single-node_wazuh.manager_1 bash
+
+#if nano missing on amazon linux
+yum install nano
+/var/ossec/etc/ossec.conf
+"
+
+<remote>
+  <connection>syslog</connection>
+  <port>514</port>
+  <protocol>udp</protocol>
+  <allowed-ips>192.168.50.1/24</allowed-ips>
+  <local_ip>192.168.50.4/24</local_ip>
+</remote>
+
+"
+#restart service then add wazuh server settings onto router itself
+sudo systemctl restart wazuh-manager
+
+#=============windows wazuh agent install and start in powershell admin
+Invoke-WebRequest -Uri "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.9.2-1.msi" -OutFile "$env:TEMP\wazuh-agent.msi"
+msiexec.exe /i "$env:TEMP\wazuh-agent.msi" /qn WAZUH_MANAGER="192.168.50.4" WAZUH_AGENT_NAME="Fury-G7-Laptop"
+
+#may need to remove <users>, <groups>, etc from config file... version unsupported??
+#start and check service
+Start-Service wazuh
+Get-Service wazuh
