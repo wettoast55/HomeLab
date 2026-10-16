@@ -130,6 +130,10 @@ docker compose up -d
 touch /mnt/jellyfin/Downloads/test.txt
 chmod 777 /mnt/jellyfin/Downloads
 
+#creat test file then check/delete
+touch /mnt/jellyfin/Downloads/test.txt
+ls -l /mnt/jellyfin/Downloads/test.txt
+rm /mnt/jellyfin/Downloads/test.txt
 
-
-
+#in proxmox host, enabling glutun
+nano /etc/pve/lxc/105.conf
