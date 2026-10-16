@@ -144,3 +144,25 @@ pct reboot 105
 
 #test while in docker folder (/opt/docker/docker)
 docker compose up -d
+
+#---------troubleshooting docker in unpriviledged lxc error
+	#AppArmor enabled on system but the docker-default profile could not be loaded
+	#...
+	#Access denied. You need policy admin privileges
+	#in proxmox host ensure config has apparmor profiles then reboot pct
+	cat /etc/pve/lxc/105.conf
+	"
+	lxc.apparmor.profile: unconfined
+	lxc.cgroup2.devices.allow: a
+	lxc.cap.drop:
+	"
+	
+	#restart docker in ct and run services
+	systemctl restart docker
+	docker compose up -d
+
+#troubleshooting - restarting gluetun service and unconfigured vpn settings
+
+
+
+
