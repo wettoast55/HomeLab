@@ -185,5 +185,9 @@ docker exec gluetun wget -qO- https://ipinfo.io/ip
   restart: unless-stopped
 "
 
+#verify qbitorrent can write to jellyfin mount
+docker exec qbittorrent sh -c "touch /downloads/qbit-test.txt"
+ls -l /mnt/jellyfin/Downloads/qbit-test.txt
 
-#----------
+#----------official qbitorrent nox container credentials generated on startup written to logs initially
+docker logs qbittorrent 2>&1 | grep -i password
