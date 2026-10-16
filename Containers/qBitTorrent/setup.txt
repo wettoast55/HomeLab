@@ -187,7 +187,7 @@ docker logs gluetun --tail 50
 	#INFO [wireguard] Connecting to 103.88.234.229:51820
 	#INFO [vpn] wireguard setup is complete
 
-#verify docker using ip of vpn
+#verify docker using ip of vpn should show new ip 
 docker exec gluetun wget -qO- https://ipinfo.io/ip
 
 #problem troubleshooting ---switching from linux server image to official qbitorrent immage in compose file and repull
@@ -212,3 +212,105 @@ ls -l /mnt/jellyfin/Downloads/qbit-test.txt
 docker logs qbittorrent 2>&1 | grep -i password
 
 #log onto web ui with temp password then change in settings->webui->username+password
+
+#-----------------firefox broken fix using kas version
+"
+  firefox:
+    image: kasmweb/firefox:1.17.0
+    container_name: firefox
+    network_mode: service:gluetun
+    shm_size: "2gb"
+    restart: unless-stopped
+"
+
+$then remove orphan services,pull and restart 
+docker compose down --remove-orphans
+docker compose pull
+docker compose up -d
+
+#once good, check firefox container is up, check docker-compose yml and ensure firefox using gluten for network, ports exposed on gluetun container not firefox... add port 3000:3000 to gluetun ports then restart containers and navigate to http://192.168.50.6:3000 default login abc..abc
+
+"
+  gluetun:
+    image: qmcgaw/gluetun
+....
+    ports:
+      - "8080:8080"
+      - "3000:3000"
+...
+  firefox:
+    image: kasmweb/firefox:1.17.0
+
+...
+"
+
+docker compose down
+docker compose up -d
+
+#firefox troubleshooting not showing though service running, access kasm at 6901 vnc instead of 3000, modify/change ports to reflect and retry'
+
+"
+  gluetun:
+    image: qmcgaw/gluetun
+....
+    ports:
+      - "8080:8080"
+      - "6901:6901"
+...
+  firefox:
+    image: kasmweb/firefox:1.17.0
+
+...
+"
+
+#use https to access, firefox will deny non ssl requests
+
+#add password preferences to docker compose yml in firefox service
+"
+    environment:
+      - VNC_PW=password
+"
+
+
+
+					#current infrastructure now
+					      Internet
+                               │
+                               │
+                    ProtonVPN WireGuard
+                               │
+                               ▼
+                       Gluetun Container
+                     (VPN + Kill Switch)
+                               │
+            ┌──────────────────┴──────────────────┐
+            │                                     │
+            ▼                                     ▼
+      qBittorrent                         Firefox (Kasm)
+      Port 8080                            Port 3000
+            │                                     │
+            └──────────────┬──────────────────────┘
+                           │
+                           ▼
+                  qBitTorrent LXC (105)
+                    Debian/Ubuntu CT
+                           │
+                           ▼
+               /mnt/jellyfin/Downloads
+                           │
+                           ▼
+            Proxmox Host Bind Mount (mp0)
+                           │
+                           ▼
+       /mnt/pve/JellyFin  (SMB Mount on PVE Host)
+                           │
+                           ▼
+                 TrueNAS VM (192.168.50.46)
+                           │
+                           ▼
+                     JellyFin Share
+                           │
+          ┌────────────────┼────────────────┐
+          │                │                │
+          ▼                ▼                ▼
+      Downloads        Movies          TV Shows
