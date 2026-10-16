@@ -88,8 +88,6 @@ services:
       - NET_ADMIN
     devices:
       - /dev/net/tun:/dev/net/tun
-    environment:
-      - TZ=America/Chicago
     ports:
       - "8080:8080"
       - "3000:3000"
@@ -100,10 +98,9 @@ services:
     container_name: qbittorrent
     network_mode: service:gluetun
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=1000
+      - PGID=1000
       - WEBUI_PORT=8080
-      - TZ=America/Chicago
     volumes:
       - /opt/docker/qbittorrent:/config
       - /mnt/jellyfin/Downloads:/downloads
@@ -114,9 +111,8 @@ services:
     container_name: firefox
     network_mode: service:gluetun
     environment:
-      - PUID=0
-      - PGID=0
-      - TZ=America/Chicago
+      - PUID=1000
+      - PGID=1000
     volumes:
       - /opt/docker/firefox:/config
     shm_size: "2gb"
@@ -135,5 +131,16 @@ touch /mnt/jellyfin/Downloads/test.txt
 ls -l /mnt/jellyfin/Downloads/test.txt
 rm /mnt/jellyfin/Downloads/test.txt
 
-#in proxmox host, enabling glutun
+#in proxmox host, add glutun config to ct config
 nano /etc/pve/lxc/105.conf
+"
+lxc.cgroup2.devices.allow: c 10:200 rwm
+lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file
+"
+
+#save file and reboot ct
+modprobe tun
+pct reboot 105
+
+#test while in docker folder (/opt/docker/docker)
+docker compose up -d
