@@ -117,6 +117,25 @@ services:
 	    - /mnt/jellyfin/Downloads:/downloads
 	
 	  restart: unless-stopped
+  firefox:
+    image: lscr.io/linuxserver/firefox:latest
+    container_name: firefox
+    network_mode: service:gluetun
+    security_opt:
+      - seccomp=unconfined
+
+    environment:
+      - CUSTOM_USER=**************************************
+      - PASSWORD=**************************************8
+      - PUID=0
+      - PGID=0
+
+    volumes:
+      - /opt/docker/firefox:/config
+
+    shm_size: "2gb"
+    restart: unless-stopped
+
 "
 
 #pull images
