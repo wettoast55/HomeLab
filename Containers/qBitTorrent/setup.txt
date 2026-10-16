@@ -90,7 +90,6 @@ services:
       - /dev/net/tun:/dev/net/tun
     ports:
       - "8080:8080"
-      - "3000:3000"
     restart: unless-stopped
 
   qbittorrent:
@@ -98,8 +97,8 @@ services:
     container_name: qbittorrent
     network_mode: service:gluetun
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=0
+      - PGID=0
       - WEBUI_PORT=8080
     volumes:
       - /opt/docker/qbittorrent:/config
@@ -162,7 +161,7 @@ docker compose up -d
 	docker compose up -d
 
 #troubleshooting - restarting gluetun service and unconfigured vpn settings
-
+#using protonvpn with wireguard
 
 
 
