@@ -76,46 +76,35 @@ nano /etc/pve/lxc/105.conf
 reboot 105
 ls -lah /mnt/jellyfin
 
-#create dir for docker files in ct, create compose config for qbittorrent
+#create dir for docker files in ct, create compose config for qbittorrent, GET WIREGUARD PRIVATE KEY< ADDRESS<ENDPOINT IP< PROT<PUBLIC FROM VPN PROVIDER
+#Using protonvpn, downloads, wireguard, new config...mex server
 mkdir -p /opt/docker
 cd /opt/docker
 "
-services:
-  gluetun:
-    image: qmcgaw/gluetun
-    container_name: gluetun
-    cap_add:
-      - NET_ADMIN
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    ports:
-      - "8080:8080"
-    restart: unless-stopped
+gluetun:
+  image: qmcgaw/gluetun
+  container_name: gluetun
+  cap_add:
+    - NET_ADMIN
+  devices:
+    - /dev/net/tun:/dev/net/tun
 
-  qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent
-    container_name: qbittorrent
-    network_mode: service:gluetun
-    environment:
-      - PUID=0
-      - PGID=0
-      - WEBUI_PORT=8080
-    volumes:
-      - /opt/docker/qbittorrent:/config
-      - /mnt/jellyfin/Downloads:/downloads
-    restart: unless-stopped
+  environment:
+    - VPN_SERVICE_PROVIDER=custom
+    - VPN_TYPE=wireguard
 
-  firefox:
-    image: lscr.io/linuxserver/firefox
-    container_name: firefox
-    network_mode: service:gluetun
-    environment:
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - /opt/docker/firefox:/config
-    shm_size: "2gb"
-    restart: unless-stopped
+    - WIREGUARD_PRIVATE_KEY=YOUR_PRIVATE_KEY
+    - WIREGUARD_ADDRESSES=YOUR_ADDRESS
+
+    - WIREGUARD_ENDPOINT_IP=THE_IP_FROM_ENDPOINT
+    - WIREGUARD_ENDPOINT_PORT=51820
+
+    - WIREGUARD_PUBLIC_KEY=THE_PUBLIC_KEY
+
+  ports:
+    - "8080:8080"
+
+  restart: unless-stopped
 "
 
 #pull images
