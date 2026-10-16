@@ -189,5 +189,7 @@ docker exec gluetun wget -qO- https://ipinfo.io/ip
 docker exec qbittorrent sh -c "touch /downloads/qbit-test.txt"
 ls -l /mnt/jellyfin/Downloads/qbit-test.txt
 
-#----------official qbitorrent nox container credentials generated on startup written to logs initially
+#----------official qbitorrent nox container credentials generated on startup written to logs initially ... port 8080 webui
 docker logs qbittorrent 2>&1 | grep -i password
+
+#log onto web ui with temp password then change in settings->webui->username+password
