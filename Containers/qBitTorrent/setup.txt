@@ -81,30 +81,42 @@ ls -lah /mnt/jellyfin
 mkdir -p /opt/docker
 cd /opt/docker
 "
-gluetun:
-  image: qmcgaw/gluetun
-  container_name: gluetun
-  cap_add:
-    - NET_ADMIN
-  devices:
-    - /dev/net/tun:/dev/net/tun
-
-  environment:
-    - VPN_SERVICE_PROVIDER=custom
-    - VPN_TYPE=wireguard
-
-    - WIREGUARD_PRIVATE_KEY=YOUR_PRIVATE_KEY
-    - WIREGUARD_ADDRESSES=YOUR_ADDRESS
-
-    - WIREGUARD_ENDPOINT_IP=THE_IP_FROM_ENDPOINT
-    - WIREGUARD_ENDPOINT_PORT=51820
-
-    - WIREGUARD_PUBLIC_KEY=THE_PUBLIC_KEY
-
-  ports:
-    - "8080:8080"
-
-  restart: unless-stopped
+services:
+	gluetun:
+	  image: qmcgaw/gluetun
+	  container_name: gluetun
+	  cap_add:
+	    - NET_ADMIN
+	  devices:
+	    - /dev/net/tun:/dev/net/tun
+	
+	  environment:
+	    - VPN_SERVICE_PROVIDER=custom
+	    - VPN_TYPE=wireguard
+	
+	    - WIREGUARD_PRIVATE_KEY=YOUR_PRIVATE_KEY
+	    - WIREGUARD_ADDRESSES=YOUR_ADDRESS
+	
+	    - WIREGUARD_ENDPOINT_IP=THE_IP_FROM_ENDPOINT
+	    - WIREGUARD_ENDPOINT_PORT=51820
+	
+	    - WIREGUARD_PUBLIC_KEY=THE_PUBLIC_KEY
+	
+	  ports:
+	    - "8080:8080"
+	
+	  restart: unless-stopped
+	qbittorrent:
+	  image: qbittorrentofficial/qbittorrent-nox
+	  container_name: qbittorrent
+	
+	  network_mode: service:gluetun
+	
+	  volumes:
+	    - /opt/docker/qbittorrent:/config
+	    - /mnt/jellyfin/Downloads:/downloads
+	
+	  restart: unless-stopped
 "
 
 #pull images
@@ -150,7 +162,28 @@ docker compose up -d
 	docker compose up -d
 
 #troubleshooting - restarting gluetun service and unconfigured vpn settings
-#using protonvpn with wireguard
+#using protonvpn with wireguard updated conf and verified vpn up
+docker logs gluetun --tail 50
+	#shows connection good
+	#INFO [wireguard] Connecting to 103.88.234.229:51820
+	#INFO [vpn] wireguard setup is complete
+
+#verify docker using ip of vpn
+docker exec gluetun wget -qO- https://ipinfo.io/ip
+
+#problem troubleshooting ---switching from linux server image to official qbitorrent immage in compose file and repull
+"qbittorrent:
+  image: qbittorrentofficial/qbittorrent-nox
+  container_name: qbittorrent
+
+  network_mode: service:gluetun
+
+  volumes:
+    - /opt/docker/qbittorrent:/config
+    - /mnt/jellyfin/Downloads:/downloads
+
+  restart: unless-stopped
+"
 
 
-
+#----------
