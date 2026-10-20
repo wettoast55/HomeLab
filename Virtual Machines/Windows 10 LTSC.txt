@@ -9,7 +9,7 @@ https://software.download.prss.microsoft.com/dbazure/Windows11_Client_x64_en-us_
                         #had to enable qemu guest agent and download virtio drivers and mount to same proxmox vm
                   https://pve.proxmox.com/wiki/Windows_VirtIO_Drivers
                   https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.302-1/virtio-win-0.1.302.iso
-#setting drive types to SATA avoids need to use virtio, less headaches
+#setting drive bus types to SATA instead of scsi avoids need to use virtio, less headaches
 
 
 #download fedora kde desktop live 44.1.7 to proxmox storage
