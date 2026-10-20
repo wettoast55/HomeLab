@@ -341,6 +341,7 @@ services:
     restart: unless-stopped
 "
 
-#then stop and restart docker
+#then remove gluetun service and restart docker
+docker rm -f gluetun
 docker compose down
 docker compose up -d
