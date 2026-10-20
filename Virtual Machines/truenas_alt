@@ -1,1 +1,6 @@
 #creation of secondary truenas for raid setup testing
+4gb mem
+using truenas scal e25.10.7 goldeneye
+
+boot disk scsi0 - 16gb
+5 2gb "disks"
