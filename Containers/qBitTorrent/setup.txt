@@ -318,16 +318,15 @@ docker compose up -d
 
 
 #--------------------------unsecured one without vpn created
-#modify docker-compose yml commenting out gluetun service and moving port config down to qbitorrent service
+#modify docker-compose yml commenting out gluetun service and put port configs inside each service
 #also comment out network_mode parameter under qbitorrent and firefox
 "
-services:
+services:  
   qbittorrent:
     image: qbittorrentofficial/qbittorrent-nox
     container_name: qbittorrent
     ports:
       - "8080:8080"
-      - "6901:6901"
     volumes:
       - /opt/docker/qbittorrent:/config
       - /mnt/jellyfin/Downloads:/downloads
@@ -335,6 +334,9 @@ services:
   firefox:
     image: kasmweb/firefox:1.17.0
     container_name: firefox
+    ports:     
+      - "6901:6901"
+      - "6901:6901/udp"  
     shm_size: "2gb"
     environment:
       - VNC_PW=password
