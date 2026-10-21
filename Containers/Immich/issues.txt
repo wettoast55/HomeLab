@@ -19,3 +19,23 @@ issue 2: resource busy/freezing truenas causing connectivity issues for entire v
   #increased resource allocation in BOTH vm configs to immich and on proxmox
   Immich config: 2cpu -> 4cpu,4gb ram ->8gb ram
   proxmox allocation: 2 cores->8 cores, 8gb ram->12gb ram
+
+issue 3: app crash
+#log...
+  """
+  Container ix-immich-pgvecto_upgrade-1  Started
+  Container ix-immich-pgvecto_upgrade-1  Waiting
+  service "pgvecto_upgrade" didn't complete successfully: exit 1
+  """
+
+1. checked logs, $docker logs ix-immich-pgvecto_upgrade-1
+2. immich failing to run due to postgresql upgrade ct cannot write to data directory.. dataset mounted has incorrect permissions
+  "ERROR: Not writable path [/var/lib/postgresql]"
+3. check what dataset/path postgresql trying to write to .. $sudo docker inspect ix-immich-pgvecto_upgrade-1 | grep -A 30 '"Destination": "/var/lib/postgresql"'
+4. container is running postgresql as: "User": "999:999" to /mnt/CloudApps/ImmichML/db mounted on /var/lib/postgresql ...so UID 999 cannot write to the db
+5. check folder ownership.. $sudo ls -ldn /mnt/CloudApps/ImmichML/db
+  "drwxr-xr-x 3 568 568 3 Sep 13 18:25 /mnt/CloudApps/ImmichML/db"
+6. since postgresql running as 999:999 but database dir is owned by 568:568, it cannot... fix is to change permissions of dir... $sudo chown -R 999:999 /mnt/CloudApps/ImmichML/db
+7. verify/test
+
+
