@@ -1,0 +1,6 @@
+#setting up and testing full ipxe server
+#personal pxe server for devices
+#creating new ct from clone template
+
+apt update
+apt install dnsmasq nginx tftpd-hpa -y
