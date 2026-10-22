@@ -1,0 +1,2 @@
+#amp server allocation ballooning disabled, ram allocation set to 24gb
+#cores 4
