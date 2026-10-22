@@ -1,0 +1,10 @@
+#truenas config with 4 4tb hdd pool 2 virtual boot/apps disks on nvme
+#static ram allocation without memory ballooning to avoid zfs arc instability....16gb ram 1 gb per tb
+
+
+#creation of secondary truenas for raid setup testing
+4gb mem
+using truenas scal e25.10.7 goldeneye
+
+boot disk scsi0 - 16gb
+5 2gb "disks"
