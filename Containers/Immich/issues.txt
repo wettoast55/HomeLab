@@ -21,7 +21,7 @@ issue 2: resource busy/freezing truenas causing connectivity issues for entire v
   proxmox allocation: 2 cores->8 cores, 8gb ram->12gb ram
 
 issue 3: app crash
-#log...
+#log... ISSUE HAS CONTINUED TO BE PERSISTANT.... once a week???? oct 27 was last instance
   """
   Container ix-immich-pgvecto_upgrade-1  Started
   Container ix-immich-pgvecto_upgrade-1  Waiting
@@ -37,5 +37,7 @@ issue 3: app crash
   "drwxr-xr-x 3 568 568 3 Sep 13 18:25 /mnt/CloudApps/ImmichML/db"
 6. since postgresql running as 999:999 but database dir is owned by 568:568, it cannot... fix is to change permissions of dir... $sudo chown -R 999:999 /mnt/CloudApps/ImmichML/db
 7. verify/test
+
+
 
 
