@@ -33,3 +33,4 @@ nameserver 8.8.8.8
 "
 
 docker compose up -d
+http://<Vaultwarden-CT-IP>:8085
