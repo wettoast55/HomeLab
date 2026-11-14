@@ -1,0 +1,6 @@
+#using docker template ubuntu
+
+mkdir -p /opt/vaultwarden
+cd /opt/vaultwarden
+
+nano docker-compose.yml
