@@ -4,3 +4,32 @@ mkdir -p /opt/vaultwarden
 cd /opt/vaultwarden
 
 nano docker-compose.yml
+"
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+
+    environment:
+      - SIGNUPS_ALLOWED=false
+      - ADMIN_TOKEN=CHANGE_THIS_TO_A_LONG_RANDOM_STRING
+
+    volumes:
+      - ./data:/data
+
+    ports:
+      - "8085:80"
+
+    restart: unless-stopped
+
+"
+
+#also ensure dns good, update as needed
+cat /etc/resolv.conf
+"
+nameserver 1.1.1.1
+nameserver 1.0.0.1
+nameserver 8.8.8.8
+"
+
+docker compose up -d
