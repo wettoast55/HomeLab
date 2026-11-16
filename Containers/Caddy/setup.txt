@@ -85,7 +85,7 @@ xxxxxxx
 Win + R
 certlm.msc
 - Trusted Root Certification Authorities
-- certs
-#go to certs and import root.crt, then verify by visiting sites
+- certs > more actions> import
+#then verify by visiting sites
 
 
