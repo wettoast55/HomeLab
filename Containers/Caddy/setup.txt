@@ -88,4 +88,7 @@ certlm.msc
 - certs > more actions> import
 #then verify by visiting sites
 
+#install tailscaled to caddy, configured magic dns on tailscale admin console
+curl -fsSL https://tailscale.com/install.sh | sh
+
 
