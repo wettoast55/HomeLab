@@ -90,6 +90,8 @@ C:\Windows\System32\drivers\etc\hosts
 192.168.50.4 proxmox.serengeti-cat.ts.net
 192.168.50.4 wazuh.serengeti-cat.ts.net
 
+#in cmd flush dns on windows device
+ipconfig /flushdns
 
 
 
