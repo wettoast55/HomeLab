@@ -35,6 +35,7 @@ proxmox.serengeti-cat.ts.ne {
     }
 }
 --------------------
+#IF RESOLUTION ERROR... USE HTTP NOT HTTPS WITHIN CADDY CONFIG
 
 # validate caddy config and reload service
 caddy validate --config /etc/caddy/Caddyfile
