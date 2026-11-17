@@ -86,9 +86,9 @@ certlm.msc
 #quick fix using windows hosts file for windows device
 C:\Windows\System32\drivers\etc\hosts
 
-#example for https://proxmox.serengeti-cat.ts.net, long term add dns to pihole
-192.168.50.2 proxmox.serengeti-cat.ts.net
-192.168.50.3 wazuh.serengeti-cat.ts.net
+#example for https://proxmox.serengeti-cat.ts.net, long term add dns to pihole, 192.168.50.4 points to caddy which routes to actual address
+192.168.50.4 proxmox.serengeti-cat.ts.net
+192.168.50.4 wazuh.serengeti-cat.ts.net
 
 
 
