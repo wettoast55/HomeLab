@@ -12,6 +12,9 @@ apt install -y caddy
 #verify
 systemctl status caddy
 
+#install tailscaled to caddy, configured magic dns on tailscale admin console using serengeti-cat.ts.net
+curl -fsSL https://tailscale.com/install.sh | sh
+
 #------------------editing caddyfile
 nano /etc/caddy/Caddyfile
 
@@ -23,21 +26,8 @@ proxmox.homelab.local {
         }
     }
 }
-
-wazuh.homelab.local {
-    reverse_proxy http://192.168.50.107:443
-}
-
-dashy.homelab.local {
-    reverse_proxy http://192.168.50.3:8088
-}
-
-pihole.homelab.local {
-    reverse_proxy http://192.168.50.100
-}
-
-#for tailscale access in furture --------------
-proxmox.your-tailnet.ts.net {
+----------------------- ABOVE IS PRE- TAILSCAIL DNS, BELOW IS PSOT
+proxmox.serengeti-cat.ts.ne {
     reverse_proxy https://192.168.50.2:8006 {
         transport http {
             tls_insecure_skip_verify
@@ -51,10 +41,15 @@ caddy validate --config /etc/caddy/Caddyfile
 systemctl reload caddy
 
 #add local dns records within pihole or whatever dns is being used
-proxmox.homelab.local -> 192.168.50.210
-wazuh.homelab.local   -> 192.168.50.210
-dashy.homelab.local   -> 192.168.50.210
-pihole.homelab.local  -> 192.168.50.210
+#then on proxmox host allow TUN passthrough
+
+#stop ct and edit config from proxmox host
+pct stop 103
+nano /etc/pve/lxc/103.conf
+lxc.cgroup2.devices.allow: c 10:200 rwm
+lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file
+lxc.apparmor.profile: unconfined
+
 
 
 Browser
@@ -88,7 +83,14 @@ certlm.msc
 - certs > more actions> import
 #then verify by visiting sites
 
-#install tailscaled to caddy, configured magic dns on tailscale admin console
-curl -fsSL https://tailscale.com/install.sh | sh
+#quick fix using windows hosts file for windows device
+C:\Windows\System32\drivers\etc\hosts
+
+#example for https://proxmox.serengeti-cat.ts.net, long term add dns to pihole
+192.168.50.2 proxmox.serengeti-cat.ts.net
+192.168.50.3 wazuh.serengeti-cat.ts.net
+
+
+
 
 
