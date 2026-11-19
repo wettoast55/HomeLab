@@ -1,0 +1,15 @@
+https://raw.githubusercontent.com/rs-jensen/lapse-jellyfin-plugin/main/manifest.json
+
+LAPSE adds a"Sync Subtitles" button directly in Jellyfin and can automatically align subtitles against the movie's audio.
+It also supports bulk syncing and automatic syncing of newly added media
+
+Dashboard
+→ Plugins
+→ Repositories
+→ Add
+→ Paste URL
+→ Catalog
+→ Install LAPSE
+→ Restart Jellyfin
+
+Install one of its sync engines (ffsubsync is usually the easiest)
